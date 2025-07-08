@@ -44,7 +44,7 @@ const features = [
   },
 ];
 
-export default function FeaturesCarousel() {
+export default function FeaturesSection() {
   const [selectedFeature, setSelectedFeature] = useState(null);
   const carouselRef = useRef(null);
 
