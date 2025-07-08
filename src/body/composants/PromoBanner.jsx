@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { motion, useScroll, useTransform } from "framer-motion";
+import { motion } from "framer-motion";
 
 export default function PromoBanner() {
   const calculateTimeLeft = () => {
@@ -28,10 +28,6 @@ export default function PromoBanner() {
     return () => clearInterval(timer);
   }, []);
 
-  // Parallax effect
-  const { scrollY } = useScroll();
-  const y = useTransform(scrollY, [0, 500], [0, -100]); // Move image slightly up on scroll
-
   return (
     <motion.section
       initial={{ opacity: 0, y: 50 }}
@@ -40,9 +36,8 @@ export default function PromoBanner() {
       transition={{ duration: 0.7 }}
       className="relative h-[400px] md:h-[500px] overflow-hidden"
     >
-      {/* Background Image with parallax */}
-      <motion.img
-        style={{ y }}
+      {/* Background Image */}
+      <img
         src="https://images.pexels.com/photos/4109084/pexels-photo-4109084.jpeg?auto=compress&cs=tinysrgb&h=750&w=1260"
         alt="Pizza promo"
         className="absolute inset-0 w-full h-full object-cover"
