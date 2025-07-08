@@ -5,6 +5,7 @@ const categories = [
   {
     id: 1,
     name: "Pizza",
+    link: "/menu/pizza",
     color: "bg-[#FF6B35]/80", // Orange
     image:
       "https://images.pexels.com/photos/315755/pexels-photo-315755.jpeg?auto=compress&cs=tinysrgb&h=750&w=1260",
@@ -12,6 +13,7 @@ const categories = [
   {
     id: 2,
     name: "Sushi",
+    link: "/menu/sushi",
     color: "bg-[#52B788]/80", // Vert
     image:
       "https://images.pexels.com/photos/357756/pexels-photo-357756.jpeg?auto=compress&cs=tinysrgb&h=750&w=1260",
@@ -19,6 +21,7 @@ const categories = [
   {
     id: 3,
     name: "Burgers",
+    link: "/menu/burgers",
     color: "bg-[#E63946]/80", // Rouge
     image:
       "https://images.pexels.com/photos/1639567/pexels-photo-1639567.jpeg?auto=compress&cs=tinysrgb&h=750&w=1260",
@@ -26,6 +29,7 @@ const categories = [
   {
     id: 4,
     name: "Salades",
+    link: "/menu/salades",
     color: "bg-[#52B788]/80", // Vert
     image:
       "https://images.pexels.com/photos/1640770/pexels-photo-1640770.jpeg?auto=compress&cs=tinysrgb&h=750&w=1260",
@@ -33,6 +37,7 @@ const categories = [
   {
     id: 5,
     name: "Pâtes",
+    link: "/menu/pates",
     color: "bg-[#6F4E37]/80", // Marron
     image:
       "https://images.pexels.com/photos/1279330/pexels-photo-1279330.jpeg?auto=compress&cs=tinysrgb&h=750&w=1260",
@@ -40,6 +45,7 @@ const categories = [
   {
     id: 6,
     name: "Desserts",
+    link: "/menu/desserts",
     color: "bg-[#E9C46A]/80", // Jaune
     image:
       "https://images.pexels.com/photos/302680/pexels-photo-302680.jpeg?auto=compress&cs=tinysrgb&h=750&w=1260",
@@ -71,9 +77,17 @@ export default function Categories() {
                 className="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-300"
               />
               <div
-                className={`${cat.color} absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300`}
+                className={`${cat.color} absolute inset-0 flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300`}
               >
-                <h3 className="text-2xl text-white font-bold">{cat.name}</h3>
+                <h3 className="text-2xl text-white font-bold mb-4">
+                  {cat.name}
+                </h3>
+                <a
+                  href={cat.link}
+                  className="bg-white text-[#FF6B35] px-4 py-2 rounded-full font-semibold hover:bg-[#FF6B35] hover:text-white transition-colors duration-300"
+                >
+                  Voir les plats
+                </a>
               </div>
             </motion.div>
           ))}
@@ -96,9 +110,17 @@ export default function Categories() {
                 className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
               />
               <div
-                className={`${cat.color} absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300`}
+                className={`${cat.color} absolute inset-0 flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300`}
               >
-                <h3 className="text-xl text-white font-bold">{cat.name}</h3>
+                <h3 className="text-xl text-white font-bold mb-3">
+                  {cat.name}
+                </h3>
+                <a
+                  href={cat.link}
+                  className="bg-white text-[#FF6B35] px-3 py-1 rounded-full font-medium hover:bg-[#FF6B35] hover:text-white transition-colors duration-300"
+                >
+                  Voir les plats
+                </a>
               </div>
             </motion.div>
           ))}
