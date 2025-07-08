@@ -1,7 +1,9 @@
 import Categories from "./body/composants/Categories.jsx";
+import ContactBanner from "./body/composants/ContactBanner.jsx";
 import FAQSection from "./body/composants/FAQSection.jsx";
 import FeaturesSection from "./body/composants/FeaturesSection.jsx";
 import MenuCards from "./body/composants/MenuCards.jsx";
+import PartnersSection from "./body/composants/PartnersSection.jsx";
 import PromoBanner from "./body/composants/PromoBanner.jsx";
 import Testimonials from "./body/composants/Testimonials.jsx";
 import TopPicks from "./body/composants/TopPicks.jsx";
@@ -22,6 +24,8 @@ function App() {
       <PromoBanner />
       <Testimonials />
       <FAQSection />
+      <PartnersSection />
+      <ContactBanner />
     </>
   );
 }
