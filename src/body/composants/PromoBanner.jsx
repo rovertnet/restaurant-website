@@ -34,23 +34,33 @@ export default function PromoBanner() {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ duration: 0.7 }}
-      className="bg-[#FF6B35] text-white py-12"
+      className="relative h-[400px] md:h-[500px] overflow-hidden"
     >
-      <div className="container mx-auto px-4 text-center">
-        <h2 className="text-3xl font-bold mb-4">🎉 Offre spéciale limitée !</h2>
-        <p className="mb-6 text-lg">
+      {/* Background Image */}
+      <img
+        src="https://images.pexels.com/photos/4109084/pexels-photo-4109084.jpeg?auto=compress&cs=tinysrgb&h=750&w=1260"
+        alt="Pizza promo"
+        className="absolute inset-0 w-full h-full object-cover"
+      />
+
+      {/* Overlay */}
+      <div className="absolute inset-0 bg-black/50 flex flex-col items-center justify-center text-center px-4">
+        <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
+          🎉 Offre spéciale limitée !
+        </h2>
+        <p className="mb-6 text-lg md:text-xl text-white">
           🍕 *2 pizzas achetées = 1 offerte* 🥳 Dépêchez-vous, l’offre se
           termine bientôt !
         </p>
 
         {/* Timer */}
-        <div className="flex justify-center space-x-4 mb-6">
+        <div className="flex justify-center space-x-3 mb-6">
           {Object.entries(timeLeft).map(([unit, value]) => (
             <div
               key={unit}
-              className="bg-white text-[#FF6B35] rounded-lg px-4 py-2 flex flex-col items-center shadow-md"
+              className="bg-white text-[#FF6B35] rounded-lg px-3 py-2 flex flex-col items-center shadow-md"
             >
-              <span className="text-2xl font-bold">{value}</span>
+              <span className="text-xl md:text-2xl font-bold">{value}</span>
               <span className="text-xs uppercase">{unit}</span>
             </div>
           ))}
@@ -59,7 +69,7 @@ export default function PromoBanner() {
         {/* Button */}
         <a
           href="/menu"
-          className="inline-block bg-white text-[#FF6B35] font-semibold px-6 py-3 rounded-full hover:bg-[#E63946] hover:text-white transition-colors duration-300"
+          className="inline-block bg-[#FF6B35] text-white font-semibold px-6 py-3 rounded-full hover:bg-[#E63946] transition-colors duration-300"
         >
           Commandez maintenant
         </a>
