@@ -1,4 +1,5 @@
 import Categories from "./body/composants/Categories.jsx";
+import FAQSection from "./body/composants/FAQSection.jsx";
 import FeaturesSection from "./body/composants/FeaturesSection.jsx";
 import MenuCards from "./body/composants/MenuCards.jsx";
 import PromoBanner from "./body/composants/PromoBanner.jsx";
@@ -20,6 +21,7 @@ function App() {
       <MenuCards />
       <PromoBanner />
       <Testimonials />
+      <FAQSection />
     </>
   );
 }
