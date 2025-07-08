@@ -1,9 +1,13 @@
-import React, { useState } from "react";
-import Slider from "react-slick";
+import React, { useState, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Truck, Leaf, ShieldCheck, Headset } from "lucide-react"; // Import des icônes
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
+import {
+  Truck,
+  Leaf,
+  ShieldCheck,
+  Headset,
+  ChevronLeft,
+  ChevronRight,
+} from "lucide-react";
 
 const features = [
   {
@@ -40,66 +44,74 @@ const features = [
   },
 ];
 
-export default function FeaturesSection() {
+export default function FeaturesCarousel() {
   const [selectedFeature, setSelectedFeature] = useState(null);
+  const carouselRef = useRef(null);
 
-  const settings = {
-    dots: true,
-    infinite: true,
-    speed: 600,
-    slidesToShow: 3,
-    slidesToScroll: 1,
-    arrows: true,
-    responsive: [
-      {
-        breakpoint: 1024,
-        settings: {
-          slidesToShow: 2,
-          arrows: true,
-        },
-      },
-      {
-        breakpoint: 640,
-        settings: {
-          slidesToShow: 1,
-          arrows: false,
-        },
-      },
-    ],
+  // Fonction pour scroller horizontalement
+  const scroll = (offset) => {
+    if (carouselRef.current) {
+      carouselRef.current.scrollBy({
+        left: offset,
+        behavior: "smooth",
+      });
+    }
   };
 
   return (
-    <section className="bg-gray-50 py-12">
+    <section className="bg-gray-50 py-12 relative">
       <div className="container mx-auto px-6">
         <h2 className="text-3xl font-bold text-center mb-10 text-gray-800">
           Pourquoi choisir Rovert Food ?
         </h2>
 
-        {/* Carrousel */}
-        <Slider {...settings}>
-          {features.map(({ id, icon, title, description, details }) => (
-            <motion.div
-              key={id}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: id * 0.2 }}
-              className="bg-white rounded-xl shadow-md p-6 text-center mx-2" // 🆕 Ajout mx-2
-            >
-              {icon}
-              <h3 className="text-xl font-semibold mb-2 text-gray-900">
-                {title}
-              </h3>
-              <p className="text-gray-600">{description}</p>
-              <button
-                onClick={() => setSelectedFeature({ title, details })}
-                className="mt-4 px-4 py-2 bg-yellow-400 text-gray-900 rounded-full hover:bg-yellow-500 transition"
+        {/* Carrousel centré */}
+        <div className="relative">
+          {/* Flèche gauche (desktop uniquement) */}
+          <button
+            onClick={() => scroll(-300)}
+            className="hidden md:flex items-center justify-center absolute left-0 top-1/2 -translate-y-1/2 bg-gray-800 text-white rounded-full p-2 shadow-lg hover:bg-gray-700 transition"
+          >
+            <ChevronLeft size={24} />
+          </button>
+
+          {/* Carrousel */}
+          <div
+            ref={carouselRef}
+            className="flex overflow-x-auto space-x-6 px-2 snap-x snap-mandatory scroll-smooth"
+          >
+            {features.map(({ id, icon, title, description, details }) => (
+              <motion.div
+                key={id}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6, delay: id * 0.2 }}
+                className="min-w-[280px] sm:min-w-[300px] md:min-w-[320px] bg-white rounded-xl shadow-md p-6 text-center snap-center flex-shrink-0"
               >
-                En savoir plus
-              </button>
-            </motion.div>
-          ))}
-        </Slider>
+                {icon}
+                <h3 className="text-xl font-semibold mb-2 text-gray-900">
+                  {title}
+                </h3>
+                <p className="text-gray-600">{description}</p>
+                <button
+                  onClick={() => setSelectedFeature({ title, details })}
+                  className="mt-4 px-4 py-2 bg-yellow-400 text-gray-900 rounded-full hover:bg-yellow-500 transition"
+                >
+                  En savoir plus
+                </button>
+              </motion.div>
+            ))}
+          </div>
+
+          {/* Flèche droite (desktop uniquement) */}
+          <button
+            onClick={() => scroll(300)}
+            className="hidden md:flex items-center justify-center absolute right-0 top-1/2 -translate-y-1/2 bg-gray-800 text-white rounded-full p-2 shadow-lg hover:bg-gray-700 transition"
+          >
+            <ChevronRight size={24} />
+          </button>
+        </div>
       </div>
 
       {/* Modal */}
