@@ -37,6 +37,13 @@ const categories = [
     image:
       "https://images.pexels.com/photos/1279330/pexels-photo-1279330.jpeg?auto=compress&cs=tinysrgb&h=750&w=1260",
   },
+  {
+    id: 6,
+    name: "Desserts",
+    color: "bg-[#E9C46A]/80", // Jaune
+    image:
+      "https://images.pexels.com/photos/302680/pexels-photo-302680.jpeg?auto=compress&cs=tinysrgb&h=750&w=1260",
+  },
 ];
 
 export default function Categories() {
