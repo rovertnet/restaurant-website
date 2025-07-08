@@ -1,3 +1,4 @@
+import Categories from "./body/composants/Categories.jsx";
 import FeaturesSection from "./body/composants/FeaturesSection.jsx";
 import MenuCards from "./body/composants/MenuCards.jsx";
 import HeroSection from "./body/HeroSection.jsx";
@@ -11,6 +12,7 @@ function App() {
       <NavBar />
       <HeroSection />
       <FeaturesSection />
+      <Categories />
       <MenuCards />
     </>
   );
