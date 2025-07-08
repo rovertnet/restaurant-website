@@ -116,7 +116,7 @@ export default function Footer() {
 
       {/* Copyright */}
       <div className="border-t border-gray-700 py-4 text-center text-sm text-gray-300">
-        © {new Date().getFullYear()} Rovert Food. Tous droits réservés.
+        © {new Date().getFullYear()} RovertNet. Tous droits réservés.
       </div>
     </footer>
   );

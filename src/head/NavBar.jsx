@@ -32,8 +32,11 @@ export default function NavBar() {
     >
       <div className="container mx-auto flex justify-between items-center p-4">
         {/* Logo */}
-        <h1 className="text-2xl text-white font-bold">Rovert Food</h1>
-
+        <div className="text-white text-2xl font-bold">
+          <a href="/" className="hover:text-gray-300">
+            <img src="../../public/rovertfood.png" alt="rovert food" className="w-14 h-14" />
+          </a>
+        </div>
         {/* Desktop Menu */}
         <ul className="hidden md:flex space-x-6 items-center">
           <li>
