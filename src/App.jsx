@@ -6,6 +6,7 @@ import Footer from "./body/composants/Footer.jsx";
 import MenuCards from "./body/composants/MenuCards.jsx";
 import PartnersSection from "./body/composants/PartnersSection.jsx";
 import PromoBanner from "./body/composants/PromoBanner.jsx";
+import TeamSection from "./body/composants/TeamSection.jsx";
 import Testimonials from "./body/composants/Testimonials.jsx";
 import TopPicks from "./body/composants/TopPicks.jsx";
 import HeroSection from "./body/HeroSection.jsx";
@@ -25,6 +26,7 @@ function App() {
       <PromoBanner />
       <Testimonials />
       <FAQSection />
+      <TeamSection />
       <PartnersSection />
       <ContactBanner />
       <Footer />
