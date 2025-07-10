@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X, ShoppingCart, User, Heart } from "lucide-react";
+import { Link } from "react-router-dom";
 
 export default function NavBar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -97,20 +98,20 @@ export default function NavBar() {
           >
             {/* Menu Links */}
             <div className="flex flex-col space-y-6 items-center">
-              <a
-                href="/"
+              <Link
+                to="/"
                 className="text-3xl text-white hover:text-gray-300"
                 onClick={closeMenu}
               >
                 Home
-              </a>
-              <a
-                href="/menu"
+              </Link>
+              <Link
+                to="/menupage"
                 className="text-3xl text-white hover:text-gray-300"
                 onClick={closeMenu}
               >
                 Menu
-              </a>
+              </Link>
               <a
                 href="/about"
                 className="text-3xl text-white hover:text-gray-300"
