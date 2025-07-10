@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ShoppingCart, X } from "lucide-react";
+import MenuCards from "../composants/MenuCards";
 
 const initialCart = [
   {
@@ -106,6 +107,8 @@ export default function Menu() {
           </motion.div>
         )}
       </AnimatePresence>
+
+      <MenuCards />
     </>
   );
 }

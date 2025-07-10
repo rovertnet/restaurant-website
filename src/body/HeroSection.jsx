@@ -14,7 +14,7 @@ export default function HeroSection() {
         className="absolute top-0 left-0 w-full h-full object-cover"
       >
         <source
-          src="https://cdn.coverr.co/videos/coverr-pizza-preparation-8181/1080p.mp4"
+          src="https://video-previews.elements.envatousercontent.com/cda33c1e-fc18-4675-b2ca-a2a0dd2a053e/watermarked_preview/watermarked_preview.mp4"
           type="video/mp4"
         />
         Your browser does not support the video tag.

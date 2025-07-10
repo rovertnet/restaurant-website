@@ -8,6 +8,8 @@ import About from "./body/autres/About.jsx";
 import CartPage from "./body/autres/CartPage.jsx";
 import CheckoutPage from "./body/autres/CheckoutPage.jsx";
 import Menu from "./body/autres/MenuPage.jsx";
+import WishlistPage from "./body/autres/WishlistPage.jsx";
+import MonCompte from "./body/autres/MonCompte.jsx";
 
 function App() {
 
@@ -22,16 +24,21 @@ function App() {
         <Route path="/team" element={<TeamPage />} />
         <Route path="/cart" element={<CartPage />} />
         <Route path="/checkout" element={<CheckoutPage />} />
+        <Route path="/wishlist" element={<WishlistPage />} />
+        <Route path="/compte" element={<MonCompte />} />
         {/* Ajoutez d'autres routes ici si nécessaire */}
-        <Route path="*" element={
-          <h1>
-            Page Not Found 404
-            <br />
-            <span className="text-red-500">Cette page n'existe pas</span>
-            <br />
-            <span className="text-blue-500">Veuillez vérifier l'URL</span>
-          </h1>
-        } />
+        <Route
+          path="*"
+          element={
+            <h1>
+              Page Not Found 404
+              <br />
+              <span className="text-red-500">Cette page n'existe pas</span>
+              <br />
+              <span className="text-blue-500">Veuillez vérifier l'URL</span>
+            </h1>
+          }
+        />
       </Routes>
       <Footer /> {/* Le footer visible partout */}
     </>
