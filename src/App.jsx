@@ -3,6 +3,9 @@ import Footer from "./body/composants/Footer.jsx";
 import NavBar from "./head/NavBar.jsx"
 import TeamPage from "./body/autres/TeamPage.jsx";
 import HomePage from "./body/autres/HomePage.jsx";
+import Contact from "./body/autres/Contact.jsx";
+import About from "./body/autres/About.jsx";
+import Menu from "./body/autres/Menu.jsx";
 
 
 function App() {
