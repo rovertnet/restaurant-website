@@ -64,12 +64,12 @@ export default function Footer() {
             <input
               type="email"
               placeholder="Votre email"
-              className="px-3 py-2 rounded text-gray-800 focus:outline-none border-2 border-gray-300 focus:border-yellow-400 transition bg-white"
+              className="px-3 py-2 text-gray-800 focus:outline-none border-2 border-gray-300 focus:border-yellow-400 transition bg-white rounded-3xl"
               required
             />
             <button
               type="submit"
-              className="bg-yellow-400 text-[#6F4E37] py-2 rounded font-semibold hover:bg-yellow-500 transition"
+              className="bg-yellow-400 text-[#6F4E37] py-2 rounded-3xl font-semibold hover:bg-yellow-500 transition"
             >
               S’abonner
             </button>
