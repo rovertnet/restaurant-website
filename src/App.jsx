@@ -7,7 +7,7 @@ import Contact from "./body/autres/Contact.jsx";
 import About from "./body/autres/About.jsx";
 import CartPage from "./body/autres/CartPage.jsx";
 import CheckoutPage from "./body/autres/CheckoutPage.jsx";
-import CartFloating from "./body/autres/MenuPage.jsx";
+import Menu from "./body/autres/MenuPage.jsx";
 
 function App() {
 
@@ -16,7 +16,7 @@ function App() {
       <NavBar /> {/* La barre de navigation visible partout */}
       <Routes>
         <Route path="/" element={<HomePage />} />
-        <Route path="/menupage" element={<CartFloating />} />
+        <Route path="/menupage" element={<Menu />} />
         <Route path="/about" element={<About />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/team" element={<TeamPage />} />

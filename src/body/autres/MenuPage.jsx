@@ -17,7 +17,7 @@ const initialCart = [
   },
 ];
 
-export default function CartFloating() {
+export default function Menu() {
   const [isOpen, setIsOpen] = useState(false);
   const [cartItems, setCartItems] = useState(initialCart);
 
