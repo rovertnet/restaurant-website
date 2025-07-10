@@ -90,14 +90,28 @@ export default function TeamPage() {
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: index * 0.1 }}
             >
-              <div className="overflow-hidden relative">
-                <img
+              <div className="relative overflow-hidden">
+                {/* Image + Zoom */}
+                <motion.img
                   src={member.photo}
                   alt={member.name}
-                  className="w-full h-60 object-cover group-hover:scale-105 transition-transform duration-300"
+                  className="w-full h-60 object-cover"
+                  whileHover={{ scale: 1.1 }}
+                  transition={{ duration: 0.5 }}
                 />
-                <div className="absolute inset-0 bg-black bg-opacity-20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                {/* Overlay + Texte animé */}
+                <motion.div
+                  initial={{ opacity: 0, y: 30 }}
+                  whileHover={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.4 }}
+                  className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center"
+                >
+                  <span className="text-white text-lg font-semibold">
+                    Voir le profil
+                  </span>
+                </motion.div>
               </div>
+              {/* Infos */}
               <div className="p-5 text-center">
                 <h3 className="text-lg font-bold text-[#6F4E37]">
                   {member.name}
