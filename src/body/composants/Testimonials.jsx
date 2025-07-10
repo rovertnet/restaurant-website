@@ -63,12 +63,12 @@ export default function Testimonials() {
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: -100 }}
               transition={{ duration: 0.5 }}
-              drag="x"
+              drag={window.innerWidth >= 768 ? "x" : false} // ✅ désactive drag mobile
               dragConstraints={{ left: 0, right: 0 }}
               dragElastic={0.3}
-              onDragEnd={(e, { offset }) => {
-                if (offset.x > 50) prevSlide();
-                else if (offset.x < -50) nextSlide();
+              onDragEnd={(e, { offset, velocity }) => {
+                if (offset.x > 50 || velocity.x > 500) prevSlide();
+                else if (offset.x < -50 || velocity.x < -500) nextSlide();
               }}
               className="bg-white rounded-xl shadow-lg p-6 text-center cursor-grab active:cursor-grabbing"
             >
