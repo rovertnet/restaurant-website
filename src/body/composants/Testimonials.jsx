@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ChevronLeft, ChevronRight } from "lucide-react";
 
 const testimonials = [
   {
@@ -45,6 +44,10 @@ export default function Testimonials() {
     );
   };
 
+  const goToSlide = (index) => {
+    setCurrent(index);
+  };
+
   return (
     <section className="py-16 bg-[#F8F3F0]">
       <div className="container mx-auto px-4">
@@ -53,15 +56,16 @@ export default function Testimonials() {
         </h2>
 
         <div className="relative max-w-xl mx-auto">
-          <AnimatePresence>
+          <AnimatePresence mode="wait">
             <motion.div
               key={testimonials[current].id}
-              initial={{ opacity: 0, x: 50 }}
+              initial={{ opacity: 0, x: 100 }}
               animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -50 }}
+              exit={{ opacity: 0, x: -100 }}
               transition={{ duration: 0.5 }}
               drag="x"
               dragConstraints={{ left: 0, right: 0 }}
+              dragElastic={0.3}
               onDragEnd={(e, { offset }) => {
                 if (offset.x > 50) prevSlide();
                 else if (offset.x < -50) nextSlide();
@@ -97,12 +101,26 @@ export default function Testimonials() {
             </motion.div>
           </AnimatePresence>
 
-          {/* Arrows */}
+          {/* Dots */}
+          <div className="flex justify-center mt-4 space-x-2">
+            {testimonials.map((_, index) => (
+              <button
+                key={index}
+                onClick={() => goToSlide(index)}
+                className={`w-3 h-3 rounded-full ${
+                  current === index ? "bg-[#6F4E37]" : "bg-gray-400"
+                }`}
+              ></button>
+            ))}
+          </div>
+
+          {/* Arrows only for desktop */}
           <div className="hidden md:flex justify-between absolute top-1/2 left-0 right-0 px-4 transform -translate-y-1/2">
             <button
               onClick={prevSlide}
               className="bg-white rounded-full p-2 shadow-md hover:bg-gray-100"
             >
+              {/* Hidden on mobile */}
               <ChevronLeft size={24} className="text-[#6F4E37]" />
             </button>
             <button

@@ -10,6 +10,8 @@ import CheckoutPage from "./body/autres/CheckoutPage.jsx";
 import Menu from "./body/autres/MenuPage.jsx";
 import WishlistPage from "./body/autres/WishlistPage.jsx";
 import MonCompte from "./body/autres/MonCompte.jsx";
+import Login from "./body/autres/Login.jsx";
+import SignUp from "./body/autres/SignUp.jsx";
 
 function App() {
 
@@ -26,6 +28,8 @@ function App() {
         <Route path="/checkout" element={<CheckoutPage />} />
         <Route path="/wishlist" element={<WishlistPage />} />
         <Route path="/compte" element={<MonCompte />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/signup" element={<SignUp />} />
         {/* Ajoutez d'autres routes ici si nécessaire */}
         <Route
           path="*"
