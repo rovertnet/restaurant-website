@@ -73,7 +73,7 @@ const teamMembers = [
 
 export default function TeamPage() {
   return (
-    <section className="py-16 bg-[#F8F3F0] min-h-screen">
+    <section className="pt-32 pb-16 bg-[#F8F3F0] min-h-screen">
       <div className="container mx-auto px-4">
         {/* Titre */}
         <h1 className="text-4xl font-bold text-center mb-12 text-[#6F4E37]">
