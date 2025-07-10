@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 
 const testimonials = [
   {
@@ -62,13 +63,13 @@ export default function Testimonials() {
               initial={{ opacity: 0, x: 100 }}
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: -100 }}
-              transition={{ duration: 0.5 }}
-              drag={window.innerWidth >= 768 ? "x" : false} // ✅ désactive drag mobile
+              transition={{ duration: 0.5, ease: "easeInOut" }}
+              drag="x"
               dragConstraints={{ left: 0, right: 0 }}
-              dragElastic={0.3}
-              onDragEnd={(e, { offset, velocity }) => {
-                if (offset.x > 50 || velocity.x > 500) prevSlide();
-                else if (offset.x < -50 || velocity.x < -500) nextSlide();
+              dragElastic={0.4}
+              onDragEnd={(e, { offset }) => {
+                if (offset.x > 50) prevSlide();
+                else if (offset.x < -50) nextSlide();
               }}
               className="bg-white rounded-xl shadow-lg p-6 text-center cursor-grab active:cursor-grabbing"
             >
@@ -101,7 +102,7 @@ export default function Testimonials() {
             </motion.div>
           </AnimatePresence>
 
-          {/* Dots */}
+          {/* Dots pour mobile */}
           <div className="flex justify-center mt-4 space-x-2">
             {testimonials.map((_, index) => (
               <button
@@ -114,13 +115,12 @@ export default function Testimonials() {
             ))}
           </div>
 
-          {/* Arrows only for desktop */}
+          {/* Flèches visibles que sur desktop */}
           <div className="hidden md:flex justify-between absolute top-1/2 left-0 right-0 px-4 transform -translate-y-1/2">
             <button
               onClick={prevSlide}
               className="bg-white rounded-full p-2 shadow-md hover:bg-gray-100"
             >
-              {/* Hidden on mobile */}
               <ChevronLeft size={24} className="text-[#6F4E37]" />
             </button>
             <button

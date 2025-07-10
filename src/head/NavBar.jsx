@@ -46,7 +46,7 @@ export default function NavBar() {
             </a>
           </li>
           <li>
-            <a href="/menu" className="text-gray-300 hover:text-white">
+            <a href="/menupage" className="text-gray-300 hover:text-white">
               Menu
             </a>
           </li>
@@ -68,7 +68,7 @@ export default function NavBar() {
             <a href="/cart" className="text-gray-300 hover:text-white">
               <ShoppingCart />
             </a>
-            <a href="/account" className="text-gray-300 hover:text-white">
+            <a href="/login" className="text-gray-300 hover:text-white">
               <User />
             </a>
           </li>
@@ -103,7 +103,7 @@ export default function NavBar() {
                 className="text-3xl text-white hover:text-gray-300"
                 onClick={closeMenu}
               >
-                Home
+                Accueil
               </Link>
               <Link
                 to="/menupage"
@@ -145,7 +145,7 @@ export default function NavBar() {
                 <ShoppingCart size={32} />
               </a>
               <a
-                href="/account"
+                href="/login"
                 className="text-white hover:text-gray-300"
                 onClick={closeMenu}
               >

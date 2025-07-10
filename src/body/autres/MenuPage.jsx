@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ShoppingCart, X } from "lucide-react";
 import MenuCards from "../composants/MenuCards";
+import { Link } from "react-router-dom";
 
 const initialCart = [
   {
@@ -100,15 +101,20 @@ export default function Menu() {
                   {total.toFixed(2)}€
                 </span>
               </div>
-              <button className="w-full bg-[#6F4E37] text-white py-2 rounded-lg hover:bg-[#8B5E3C] transition">
-                Passer la commande
-              </button>
+              <Link
+                to="/checkout"
+                className="w-full bg-[#6F4E37] text-white flex justify-center items-center  py-2 rounded-lg text-center hover:bg-[#8B5E3C] transition"
+              >
+                Passer à la caisse
+              </Link>
             </div>
           </motion.div>
         )}
       </AnimatePresence>
-
-      <MenuCards />
+      {/* Main Content */}
+      <div className="py-32">
+        <MenuCards />
+      </div>
     </>
   );
 }
