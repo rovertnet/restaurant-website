@@ -2,12 +2,11 @@ import React from "react";
 import { motion } from "framer-motion";
 
 const logos = [
-  "https://upload.wikimedia.org/wikipedia/commons/4/44/McDonald%27s_logo.svg",
   "https://upload.wikimedia.org/wikipedia/commons/a/a9/Amazon_logo.svg",
   "https://upload.wikimedia.org/wikipedia/commons/f/fa/Apple_logo_black.svg",
   "https://upload.wikimedia.org/wikipedia/commons/0/08/Netflix_2015_logo.svg",
-  "https://upload.wikimedia.org/wikipedia/commons/5/51/Google.png",
-  "https://upload.wikimedia.org/wikipedia/commons/a/ab/Spotify_logo_with_text.svg",
+  "https://upload.wikimedia.org/wikipedia/commons/2/2f/Google_2015_logo.svg", // ✅ corrigé Google SVG
+  "https://upload.wikimedia.org/wikipedia/commons/2/26/Spotify_logo_with_text.svg", // ✅ corrigé Spotify SVG
 ];
 
 export default function PartnersSection() {
@@ -26,23 +25,14 @@ export default function PartnersSection() {
           transition={{
             repeat: Infinity,
             repeatType: "loop",
-            duration: 20,
+            duration: 8, // ✅ vitesse plus rapide
             ease: "linear",
           }}
         >
           <div className="flex space-x-12">
-            {logos.map((logo, i) => (
+            {logos.concat(logos).map((logo, i) => (
               <img
                 key={i}
-                src={logo}
-                alt={`Logo ${i}`}
-                className="h-12 grayscale hover:grayscale-0 transition duration-300"
-              />
-            ))}
-            {/* Duplicate logos for seamless looping */}
-            {logos.map((logo, i) => (
-              <img
-                key={i + logos.length}
                 src={logo}
                 alt={`Logo ${i}`}
                 className="h-12 grayscale hover:grayscale-0 transition duration-300"

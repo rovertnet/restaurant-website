@@ -1,5 +1,6 @@
 import React from "react";
 import { motion } from "framer-motion";
+import { Link } from "react-router-dom";
 
 const teamMembers = [
   {
@@ -28,10 +29,12 @@ export default function TeamSection() {
   return (
     <section className="py-16 bg-[#F8F3F0]">
       <div className="container mx-auto px-4">
+        {/* Titre */}
         <h2 className="text-3xl font-bold text-center mb-10 text-[#6F4E37]">
           Notre Équipe 👨‍🍳
         </h2>
 
+        {/* Cartes équipe */}
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8">
           {teamMembers.map((member, index) => (
             <motion.div
@@ -56,6 +59,16 @@ export default function TeamSection() {
               </div>
             </motion.div>
           ))}
+        </div>
+
+        {/* Bouton voir toute l’équipe */}
+        <div className="text-center mt-10">
+          <Link
+            to="/team"
+            className="inline-block bg-yellow-400 text-gray-900 font-semibold py-2 px-6 rounded-full hover:bg-yellow-500 transition"
+          >
+            Voir toute l’équipe 👥
+          </Link>
         </div>
       </div>
     </section>
