@@ -1,5 +1,6 @@
 import React from "react";
 import { motion } from "framer-motion";
+import { Link } from "react-router-dom";
 
 export default function HeroSection() {
   return (
@@ -45,12 +46,12 @@ export default function HeroSection() {
           animate={{ opacity: 1, scale: 1 }}
           transition={{ delay: 0.9, duration: 0.6 }}
         >
-          <a
-            href="/menu"
+          <Link
+            to="/menupage"
             className="inline-block mt-6 px-6 py-3 bg-yellow-400 text-gray-900 font-semibold rounded-full hover:bg-yellow-500 transition"
           >
-            See Our Menu 🍽️
-          </a>
+            Voir notre menu 🍽️
+          </Link>
         </motion.div>
       </div>
     </section>
