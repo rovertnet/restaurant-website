@@ -42,7 +42,7 @@ export default function NavBar() {
         <ul className="hidden md:flex space-x-6 items-center">
           <li>
             <a href="/" className="text-gray-300 hover:text-white">
-              Home
+              Accueil
             </a>
           </li>
           <li>
@@ -112,20 +112,20 @@ export default function NavBar() {
               >
                 Menu
               </Link>
-              <a
-                href="/about"
+              <Link
+                to="/about"
                 className="text-3xl text-white hover:text-gray-300"
                 onClick={closeMenu}
               >
                 A propos
-              </a>
-              <a
-                href="/contact"
+              </Link>
+              <Link
+                to="/contact"
                 className="text-3xl text-white hover:text-gray-300"
                 onClick={closeMenu}
               >
                 Contact
-              </a>
+              </Link>
             </div>
 
             {/* Bottom Icons */}
