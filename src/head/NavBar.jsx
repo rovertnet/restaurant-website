@@ -51,7 +51,7 @@ export default function NavBar() {
           </li>
           <li>
             <a href="/about" className="text-gray-300 hover:text-white">
-              About Us
+              A propos
             </a>
           </li>
           <li>
@@ -87,7 +87,7 @@ export default function NavBar() {
       {/* Mobile Menu */}
       <AnimatePresence>
         {isOpen && (
-          <motion.div
+          <motion.div 
             key="mobile-menu"
             initial="hidden"
             animate="visible"
@@ -116,7 +116,7 @@ export default function NavBar() {
                 className="text-3xl text-white hover:text-gray-300"
                 onClick={closeMenu}
               >
-                About Us
+                A propos
               </a>
               <a
                 href="/contact"

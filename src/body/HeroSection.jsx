@@ -9,9 +9,10 @@ export default function HeroSection() {
         initial={{ scale: 1.2 }}
         animate={{ scale: 1 }}
         transition={{ duration: 10, ease: "easeOut" }}
-        className="absolute top-0 left-0 w-full h-full bg-cover bg-center"
+        className="absolute top-0 left-0 w-full h-full bg-cover bg-center banner-image"
         style={{
-          backgroundImage: "url('../../public/img1.jpg')", // Adjust the path as needed
+          backgroundImage:
+            "url('https://cdn.pixabay.com/photo/2017/12/09/08/18/pizza-3007395_1280.jpg')",
         }}
       ></motion.div>
 

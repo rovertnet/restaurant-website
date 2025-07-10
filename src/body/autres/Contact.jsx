@@ -3,10 +3,13 @@ import { motion } from "framer-motion";
 import { MessageCircle } from "lucide-react";
 
 export default function ContactPage() {
-  const whatsappNumber = "+33612345678"; // Remplace par TON numéro WhatsApp
+  const whatsappNumber = "+33612345678"; // ✅ Remplace par TON numéro WhatsApp
+  const defaultMessage = encodeURIComponent(
+    "Bonjour 👋, je souhaite réserver une table pour ce soir 🍕. Pouvez-vous me confirmer la disponibilité ?"
+  );
 
   return (
-    <section className="py-16 bg-[#F8F3F0] min-h-screen relative">
+    <section className="py-32 bg-[#F8F3F0] min-h-screen relative">
       <div className="container mx-auto px-4">
         {/* Titre */}
         <motion.h1
@@ -96,10 +99,10 @@ export default function ContactPage() {
               Nos coordonnées
             </h2>
             <p className="text-gray-700 mb-2">
-              📍 <strong>Adresse:</strong> 123 Rue des Gourmets, Paris
+              📍 <strong>Adresse:</strong> 123 Rue des Gourmets, Kinshasa
             </p>
             <p className="text-gray-700 mb-2">
-              📞 <strong>Téléphone:</strong> +33 1 23 45 67 89
+              📞 <strong>Téléphone:</strong> +243 823444705
             </p>
             <p className="text-gray-700 mb-2">
               📧 <strong>Email:</strong> contact@rovertfood.com
@@ -122,7 +125,10 @@ export default function ContactPage() {
 
       {/* ✅ Bouton WhatsApp flottant */}
       <motion.a
-        href={`https://wa.me/${whatsappNumber.replace(/\D/g, "")}`}
+        href={`https://wa.me/${whatsappNumber.replace(
+          /\D/g,
+          ""
+        )}?text=${defaultMessage}`}
         target="_blank"
         rel="noopener noreferrer"
         className="fixed bottom-6 right-6 bg-green-500 text-white rounded-full p-4 shadow-lg hover:bg-green-600 transition"
