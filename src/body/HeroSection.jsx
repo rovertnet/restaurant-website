@@ -1,25 +1,13 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
+import bgImage from "../assets/hero-food.jpg"; // 🔥 Mets ici ton image
 
 export default function HeroSection() {
   return (
-    <section className="relative h-screen flex items-center justify-center overflow-hidden">
-      {/* Background Video */}
-      <video
-        autoPlay
-        loop
-        muted
-        playsInline
-        className="absolute top-0 left-0 w-full h-full object-cover"
-      >
-        <source
-          src="https://video-previews.elements.envatousercontent.com/cda33c1e-fc18-4675-b2ca-a2a0dd2a053e/watermarked_preview/watermarked_preview.mp4"
-          type="video/mp4"
-        />
-        Your browser does not support the video tag.
-      </video>
-
+    <section
+      className="bg-image relative h-screen flex items-center justify-center overflow-hidden bg-cover bg-center"
+    >
       {/* Overlay */}
       <div className="absolute inset-0 bg-black bg-opacity-50"></div>
 

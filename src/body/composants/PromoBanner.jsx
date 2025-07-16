@@ -68,7 +68,7 @@ export default function PromoBanner() {
 
         {/* Button */}
         <a
-          href="/menu"
+          href="/menupage"
           className="inline-block bg-[#FF6B35] text-white font-semibold px-6 py-3 rounded-full hover:bg-[#E63946] transition-colors duration-300"
         >
           Commandez maintenant

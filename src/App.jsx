@@ -12,11 +12,13 @@ import WishlistPage from "./body/autres/WishlistPage.jsx";
 import MonCompte from "./body/autres/MonCompte.jsx";
 import Login from "./body/autres/Login.jsx";
 import SignUp from "./body/autres/SignUp.jsx";
+import Preloader from "./body/composants/Preloader.jsx";
 
 function App() {
 
   return (
     <>
+      <Preloader /> {/* La barre de navigation visible partout */}
       <NavBar /> {/* La barre de navigation visible partout */}
       <Routes>
         <Route path="/" element={<HomePage />} />
