@@ -45,35 +45,39 @@ export default function PromoBanner() {
 
       {/* Overlay */}
       <div className="absolute inset-0 bg-black/50 flex flex-col items-center justify-center text-center px-4">
-        <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
-          🎉 Offre spéciale limitée !
+        <h2 className="text-3xl md:text-5xl font-bold text-white mb-4 drop-shadow-lg">
+          🎉 Offre Spéciale Limitée !
         </h2>
-        <p className="mb-6 text-lg md:text-xl text-white">
+        <p className="mb-6 text-lg md:text-2xl text-white max-w-xl drop-shadow">
           🍕 *2 pizzas achetées = 1 offerte* 🥳 Dépêchez-vous, l’offre se
           termine bientôt !
         </p>
 
-        {/* Timer */}
-        <div className="flex justify-center space-x-3 mb-6">
-          {Object.entries(timeLeft).map(([unit, value]) => (
-            <div
-              key={unit}
-              className="bg-white text-[#FF6B35] rounded-lg px-3 py-2 flex flex-col items-center shadow-md"
-            >
-              <span className="text-xl md:text-2xl font-bold">{value}</span>
-              <span className="text-xs uppercase">{unit}</span>
-            </div>
-          ))}
-        </div>
-
         {/* Button */}
         <a
           href="/menupage"
-          className="inline-block bg-[#FF6B35] text-white font-semibold px-6 py-3 rounded-full hover:bg-[#E63946] transition-colors duration-300"
+          className="inline-block bg-[#FF6B35] text-white font-semibold px-6 py-3 rounded-full hover:bg-[#E63946] transition-colors duration-300 text-base md:text-lg shadow-lg"
         >
           Commandez maintenant
         </a>
       </div>
+
+      {/* Floating Timer */}
+      <motion.div
+        initial={{ scale: 0 }}
+        animate={{ scale: 1 }}
+        transition={{ type: "spring", stiffness: 300, damping: 20 }}
+        className="fixed bottom-6 right-6 md:bottom-8 md:right-8 z-50"
+      >
+        <motion.div className="bg-[#FF6B35] text-white rounded-full p-4 shadow-lg flex space-x-3 items-center animate-pulse hover:scale-105 transition-transform">
+          {Object.entries(timeLeft).map(([unit, value]) => (
+            <div key={unit} className="flex flex-col items-center">
+              <span className="text-lg md:text-xl font-bold">{value}</span>
+              <span className="text-xs uppercase">{unit}</span>
+            </div>
+          ))}
+        </motion.div>
+      </motion.div>
     </motion.section>
   );
 }

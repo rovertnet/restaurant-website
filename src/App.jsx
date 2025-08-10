@@ -13,6 +13,7 @@ import MonCompte from "./body/autres/MonCompte.jsx";
 import Login from "./body/autres/Login.jsx";
 import SignUp from "./body/autres/SignUp.jsx";
 import Preloader from "./body/composants/Preloader.jsx";
+import CategorieDetail from "./body/composants/CategorieDetail.jsx";
 
 function App() {
 
@@ -32,6 +33,7 @@ function App() {
         <Route path="/compte" element={<MonCompte />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<SignUp />} />
+        <Route path="/categories/:id" element={<CategorieDetail />} />
         {/* Ajoutez d'autres routes ici si nécessaire */}
         <Route
           path="*"
