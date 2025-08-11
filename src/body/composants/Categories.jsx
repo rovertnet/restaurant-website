@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { getCategories } from "../../services/categorieService";
+import { Link } from "react-router-dom";
 
 const categoryImages = {
   Pizza: "https://images.pexels.com/photos/315755/pexels-photo-315755.jpeg",
@@ -51,21 +52,24 @@ export default function Categories() {
               className="relative rounded-xl overflow-hidden shadow-lg group"
             >
               <img
-                src={cat.image}
-                alt={cat.name}
+                src={cat.imageUrl}
+                alt={cat.nom}
                 className="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-300"
               />
               <div className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                 <div className="text-center">
                   <h3 className="text-2xl text-white font-bold mb-4">
-                    {cat.name}
+                    {cat.nom}
                   </h3>
-                  <a
-                    href={`/menu/${(cat.name || "categorie").toLowerCase()}`}
+                  <p className="text-white mb-6">
+                    Découvrez nos plats délicieux dans cette catégorie.
+                  </p>
+                  <Link
+                    to={`/categorie/${cat.id}`}
                     className="bg-white text-[#FF6B35] px-4 py-2 rounded-full font-semibold hover:bg-[#FF6B35] hover:text-white transition-colors duration-300"
                   >
                     Voir les plats
-                  </a>
+                  </Link>
                 </div>
               </div>
             </div>

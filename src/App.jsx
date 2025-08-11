@@ -33,7 +33,7 @@ function App() {
         <Route path="/compte" element={<MonCompte />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<SignUp />} />
-        <Route path="/categories/:id" element={<CategorieDetail />} />
+        <Route path="/categorie/:id" element={<CategorieDetail />} />
         {/* Ajoutez d'autres routes ici si nécessaire */}
         <Route
           path="*"

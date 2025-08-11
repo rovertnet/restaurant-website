@@ -39,7 +39,7 @@ const CategorieDetail = () => {
   }
 
   return (
-    <section className="container mx-auto px-4 py-10">
+    <section className="container mx-auto px-4 py-32">
       <h1 className="text-3xl font-bold mb-4 text-center">{categorie.nom}</h1>
       {categorie.image && (
         <img
@@ -78,7 +78,15 @@ const CategorieDetail = () => {
                   <h3 className="text-xl font-semibold text-gray-800">
                     {item.nom}
                   </h3>
-                  <p className="text-gray-600">{item.prix} €</p>
+                  <div className="flex justify-between items-center">
+                    <span className="text-lg text-[#FF6B35] font-bold">
+                      {item.prix} €
+                    </span>
+                    <p className="text-gray-600">{item.disponible}</p>
+                  </div>
+                  <button className="bg-[#FF6B35] text-white px-4 py-2 rounded-full hover:bg-[#e65c2f] transition-colors duration-300">
+                    Ajouter au panier
+                  </button>
                 </div>
               </motion.div>
             ))}
