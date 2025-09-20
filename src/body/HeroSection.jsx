@@ -38,7 +38,7 @@ export default function HeroSlider() {
   }, []);
 
   return (
-    <section className="relative h-screen w-full overflow-hidden">
+    <section className="relative h-screen w-full overflow-hidden -mt-28">
       <AnimatePresence mode="wait">
         <motion.div
           key={current}
@@ -74,21 +74,16 @@ export default function HeroSlider() {
         >
           {slides[current].subtitle}
         </motion.p>
-      </div>
 
-      {/* Flèches */}
-      <button
-        onClick={prevSlide}
-        className="absolute left-6 top-1/2 -translate-y-1/2 bg-white text-black p-3 rounded-full shadow-lg hover:bg-gray-200 transition"
-      >
-        <ChevronLeft size={28} />
-      </button>
-      <button
-        onClick={nextSlide}
-        className="absolute right-6 top-1/2 -translate-y-1/2 bg-white text-black p-3 rounded-full shadow-lg hover:bg-gray-200 transition"
-      >
-        <ChevronRight size={28} />
-      </button>
+        <motion.button
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.8 }}
+          className="mt-8 px-6 py-3 bg-red-600 hover:bg-red-700 rounded-full text-white font-semibold shadow-lg"
+        >
+          Voir le Menu
+        </motion.button>
+      </div>
 
       {/* Indicateurs (dots) */}
       <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex space-x-3 z-20">
