@@ -6,34 +6,39 @@ const slides = [
   {
     image:
       "https://images.unsplash.com/photo-1525755662778-989d0524087e?auto=format&fit=crop&w=1920&q=80",
-    title: "Pâtes Italiennes Authentiques",
-    subtitle: "Préparées avec amour et tradition.",
+    title: "Authentic Italian Pasta",
+    subtitle: "Freshly made with love and tradition.",
   },
   {
     image:
       "https://images.unsplash.com/photo-1550547660-d9450f859349?auto=format&fit=crop&w=1920&q=80",
-    title: "Burgers Gourmets Juteux",
-    subtitle: "Grillés à la perfection à chaque fois.",
+    title: "Juicy Gourmet Burgers",
+    subtitle: "Grilled to perfection, every single time.",
   },
   {
     image:
       "https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=1920&q=80",
-    title: "Repas Sains et Savoureux",
-    subtitle: "Parce que bien manger, c'est aussi prendre soin de soi.",
+    title: "Healthy & Tasty Meals",
+    subtitle: "Because good food is also good for you.",
   },
 ];
 
 export default function HeroSlider() {
   const [current, setCurrent] = useState(0);
 
-  const nextSlide = () => setCurrent((prev) => (prev + 1) % slides.length);
-  const prevSlide = () =>
+  const nextSlide = () => {
+    setCurrent((prev) => (prev + 1) % slides.length);
+  };
+
+  const prevSlide = () => {
     setCurrent((prev) => (prev - 1 + slides.length) % slides.length);
-  const goToSlide = (index) => setCurrent(index);
+  };
 
   // ⏱️ Autoplay toutes les 5 secondes
   useEffect(() => {
-    const interval = setInterval(nextSlide, 5000);
+    const interval = setInterval(() => {
+      nextSlide();
+    }, 5000);
     return () => clearInterval(interval);
   }, []);
 
@@ -89,19 +94,6 @@ export default function HeroSlider() {
       >
         <ChevronRight size={28} />
       </button>
-
-      {/* Indicateurs (dots) */}
-      <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex space-x-3 z-20">
-        {slides.map((_, index) => (
-          <button
-            key={index}
-            onClick={() => goToSlide(index)}
-            className={`w-3 h-3 rounded-full transition ${
-              current === index ? "bg-white" : "bg-white/50"
-            }`}
-          ></button>
-        ))}
-      </div>
     </section>
   );
 }

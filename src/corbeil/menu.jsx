@@ -21,7 +21,8 @@ export default function MenuCards() {
       setCategories(cats);
 
       const menus = await getMenus();
-      setMenuItems(menus.filter((menu) => menu.disponible));
+      setMenuItems(menus);
+
       setLoading(false);
     };
     fetchData();
@@ -31,10 +32,10 @@ export default function MenuCards() {
     setActiveCategory(id);
     if (id === null) {
       const menus = await getMenus();
-      setMenuItems(menus.filter((menu) => menu.disponible));
+      setMenuItems(menus);
     } else {
       const menus = await getMenusByCategorie(id);
-      setMenuItems(menus.filter((menu) => menu.disponible));
+      setMenuItems(menus);
     }
   };
 
@@ -75,6 +76,7 @@ export default function MenuCards() {
         ))}
       </div>
 
+      {/* Liste des menus avec animation */}
       {menuItems.length === 0 ? (
         <p className="text-center text-gray-500">Aucun plat disponible.</p>
       ) : (
@@ -93,8 +95,7 @@ export default function MenuCards() {
                   animate={{ opacity: 1, scale: 1 }}
                   exit={{ opacity: 0, scale: 0.9 }}
                   transition={{ duration: 0.3 }}
-                  className="relative bg-white rounded-2xl shadow-lg overflow-hidden cursor-pointer hover:shadow-2xl transition-shadow"
-                  whileHover={{ scale: 1.03 }}
+                  className="relative bg-white rounded-2xl shadow-lg overflow-hidden"
                 >
                   {/* Bouton wishlist */}
                   <div className="absolute top-3 right-3 z-10">
@@ -116,17 +117,11 @@ export default function MenuCards() {
                     </motion.button>
                   </div>
 
-                  {/* Image avec effet de zoom au survol */}
-                  <motion.img
-                    src={
-                      item.image
-                        ? `http://localhost:3000/uploads/menus/${item.image}`
-                        : "https://via.placeholder.com/300"
-                    }
+                  {/* Image */}
+                  <img
+                    src={item.image || "https://via.placeholder.com/300"}
                     alt={item.nom}
                     className="w-full h-48 object-cover"
-                    whileHover={{ scale: 1.05 }}
-                    transition={{ duration: 0.3 }}
                   />
 
                   {/* Contenu */}
@@ -134,17 +129,9 @@ export default function MenuCards() {
                     <h3 className="text-xl font-semibold text-gray-800">
                       {item.nom}
                     </h3>
-
-                    {item.categorie?.nom && (
-                      <p className="text-gray-500 text-sm mt-1">
-                        Catégorie : {item.categorie.nom}
-                      </p>
-                    )}
-
                     <p className="text-gray-600 mt-1">
                       {item.prix ? `${item.prix} €` : "Prix non disponible"}
                     </p>
-
                     <button className="mt-4 w-full bg-yellow-400 text-gray-900 font-semibold py-2 px-4 rounded-full hover:bg-yellow-500 transition">
                       Ajouter au panier 🛒
                     </button>
