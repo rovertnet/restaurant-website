@@ -47,7 +47,7 @@ const CategorieDetail = () => {
       {/* Bannière */}
       <div className="relative w-full h-64 md:h-80">
         <img
-          src={categorie.image || "https://via.placeholder.com/1200x400"}
+          src={categorie.imageUrl || "https://via.placeholder.com/1200x400"}
           alt={categorie.nom}
           className="w-full h-full object-cover"
         />

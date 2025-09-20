@@ -1,10 +1,10 @@
 import axios from "axios";
 
-const API_URL = import.meta.env.VITE_API_URL || "http://localhost:3000"; // adapte si besoin
+const API_URL = import.meta.env.VITE_API_URL || "http://localhost:3000";
 
 export const getCategories = async () => {
   try {
-    const res = await axios.get(`${API_URL}/categories/`);
+    const res = await axios.get(`${API_URL}/categories`);
     return res.data;
   } catch (err) {
     console.error("Erreur lors du chargement des catégories", err);
@@ -13,18 +13,19 @@ export const getCategories = async () => {
 };
 
 export const getCategorieById = async (categorieId) => {
-  const response = await fetch(
-    `${import.meta.env.VITE_API_BASE_URL}/categories/${categorieId}`
-  );
-  if (!response.ok)
-    throw new Error("Erreur lors de la récupération de la catégorie");
-  return response.json();
+  try {
+    const res = await axios.get(`${API_URL}/categories/${categorieId}`);
+    return res.data;
+  } catch (err) {
+    console.error("Erreur lors de la récupération de la catégorie", err);
+    return null;
+  }
 };
 
 export const getMenusByCategorie = async (categorieId) => {
   try {
-    const res = await axios.get(`${API_URL}/categorie/${categorieId}/menus`);
-    return res.data.menus || [];
+    const res = await axios.get(`${API_URL}/categories/${categorieId}/menus`);
+    return res.data || [];
   } catch (err) {
     console.error("Erreur lors du chargement des menus par catégorie", err);
     return [];
