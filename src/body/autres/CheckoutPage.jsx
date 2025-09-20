@@ -1,18 +1,71 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
 import { motion } from "framer-motion";
 import { CreditCard, DollarSign } from "lucide-react";
+import toast, { Toaster } from "react-hot-toast";
+import { createCommande } from "../services/commandeService";
 
 export default function CheckoutPage() {
-  const [paymentMethod, setPaymentMethod] = useState("Carte");
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    watch,
+    formState: { errors },
+  } = useForm();
+  const [items, setItems] = useState([]);
+  const [total, setTotal] = useState(0);
+  const [loading, setLoading] = useState(false);
+
+  const paiement = watch("paiement", "Carte");
+
+  // Charger le panier depuis localStorage
+  useEffect(() => {
+    const storedCart = JSON.parse(localStorage.getItem("cart")) || [];
+    setItems(storedCart);
+    const totalPrice = storedCart.reduce(
+      (sum, item) => sum + item.prix * item.quantite,
+      0
+    );
+    setTotal(totalPrice);
+    setValue("paiement", "Carte");
+  }, [setValue]);
+
+  const onSubmit = async (data) => {
+    if (!items.length) return toast.error("Votre panier est vide !");
+    setLoading(true);
+
+    try {
+      const commandeData = {
+        ...data,
+        userId: 1, // ID de l'utilisateur connecté
+        items,
+        total,
+      };
+
+      await createCommande(commandeData);
+      toast.success("Commande validée avec succès !");
+      localStorage.removeItem("cart");
+      setItems([]);
+      setTotal(0);
+    } catch (error) {
+      console.error(error);
+      toast.error("Erreur lors de la commande. Merci de réessayer !");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div className="bg-[#F8F3F0] min-h-screen py-32">
+      <Toaster position="top-right" />
       <div className="container mx-auto px-4 max-w-3xl">
         <h1 className="text-3xl md:text-4xl font-bold text-center text-[#6F4E37] mb-8">
           🛵 Passer la commande
         </h1>
 
         <motion.form
+          onSubmit={handleSubmit(onSubmit)}
           initial={{ opacity: 0, y: 50 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
@@ -23,33 +76,52 @@ export default function CheckoutPage() {
             <h2 className="text-xl font-bold text-[#6F4E37] mb-2">
               📦 Adresse de livraison
             </h2>
+
             <input
               type="text"
               placeholder="Nom et prénom"
+              {...register("nom", { required: true })}
               className="w-full p-3 border rounded-lg mb-3 focus:outline-none focus:border-[#6F4E37]"
             />
+            {errors.nom && <p className="text-red-500">Nom obligatoire</p>}
+
             <input
               type="text"
               placeholder="Adresse (rue, numéro...)"
+              {...register("adresse", { required: true })}
               className="w-full p-3 border rounded-lg mb-3 focus:outline-none focus:border-[#6F4E37]"
             />
+            {errors.adresse && (
+              <p className="text-red-500">Adresse obligatoire</p>
+            )}
+
             <div className="flex gap-3">
               <input
                 type="text"
                 placeholder="Ville"
+                {...register("ville", { required: true })}
                 className="w-1/2 p-3 border rounded-lg focus:outline-none focus:border-[#6F4E37]"
               />
               <input
                 type="text"
                 placeholder="Code postal"
+                {...register("codePostal", { required: true })}
                 className="w-1/2 p-3 border rounded-lg focus:outline-none focus:border-[#6F4E37]"
               />
             </div>
+            {(errors.ville || errors.codePostal) && (
+              <p className="text-red-500">Ville et code postal obligatoires</p>
+            )}
+
             <input
               type="tel"
               placeholder="Téléphone"
+              {...register("telephone", { required: true })}
               className="w-full p-3 border rounded-lg mt-3 focus:outline-none focus:border-[#6F4E37]"
             />
+            {errors.telephone && (
+              <p className="text-red-500">Téléphone obligatoire</p>
+            )}
           </div>
 
           {/* Paiement */}
@@ -58,54 +130,34 @@ export default function CheckoutPage() {
               💳 Mode de paiement
             </h2>
             <div className="flex gap-4">
-              {/* Carte */}
-              <motion.button
-                type="button"
-                onClick={() => setPaymentMethod("Carte")}
-                whileHover={{ scale: 1.05, boxShadow: "0 0 20px #6F4E37" }}
-                className={`flex-1 p-3 rounded-lg border text-center font-medium transition flex flex-col items-center ${
-                  paymentMethod === "Carte"
-                    ? "bg-[#6F4E37] text-white"
-                    : "bg-white text-[#6F4E37] border-[#6F4E37]"
-                }`}
-              >
-                <CreditCard size={24} className="mb-1" />
-                Carte
-              </motion.button>
-
-              {/* PayPal */}
-              <motion.button
-                type="button"
-                onClick={() => setPaymentMethod("PayPal")}
-                whileHover={{ scale: 1.05, boxShadow: "0 0 20px #6F4E37" }}
-                className={`flex-1 p-3 rounded-lg border text-center font-medium transition flex flex-col items-center ${
-                  paymentMethod === "PayPal"
-                    ? "bg-[#6F4E37] text-white"
-                    : "bg-white text-[#6F4E37] border-[#6F4E37]"
-                }`}
-              >
-                <img
-                  src="https://www.logo.wine/a/logo/PayPal/PayPal-Logo.wine.svg"
-                  alt="PayPal"
-                  className="w-16 h-6 object-contain mb-1"
-                />
-                PayPal
-              </motion.button>
-
-              {/* Espèces */}
-              <motion.button
-                type="button"
-                onClick={() => setPaymentMethod("Espèces")}
-                whileHover={{ scale: 1.05, boxShadow: "0 0 20px #6F4E37" }}
-                className={`flex-1 p-3 rounded-lg border text-center font-medium transition flex flex-col items-center ${
-                  paymentMethod === "Espèces"
-                    ? "bg-[#6F4E37] text-white"
-                    : "bg-white text-[#6F4E37] border-[#6F4E37]"
-                }`}
-              >
-                <DollarSign size={24} className="mb-1" />
-                Espèces
-              </motion.button>
+              {["Carte", "PayPal", "Espèces"].map((method) => (
+                <motion.button
+                  key={method}
+                  type="button"
+                  onClick={() => setValue("paiement", method)}
+                  whileHover={{ scale: 1.05, boxShadow: "0 0 20px #6F4E37" }}
+                  className={`flex-1 p-3 rounded-lg border text-center font-medium transition flex flex-col items-center ${
+                    paiement === method
+                      ? "bg-[#6F4E37] text-white"
+                      : "bg-white text-[#6F4E37] border-[#6F4E37]"
+                  }`}
+                >
+                  {method === "Carte" && (
+                    <CreditCard size={24} className="mb-1" />
+                  )}
+                  {method === "Espèces" && (
+                    <DollarSign size={24} className="mb-1" />
+                  )}
+                  {method === "PayPal" && (
+                    <img
+                      src="https://www.logo.wine/a/logo/PayPal/PayPal-Logo.wine.svg"
+                      alt="PayPal"
+                      className="w-16 h-6 object-contain mb-1"
+                    />
+                  )}
+                  {method}
+                </motion.button>
+              ))}
             </div>
           </div>
 
@@ -114,28 +166,33 @@ export default function CheckoutPage() {
             <h3 className="text-lg font-semibold text-[#6F4E37] mb-2">
               🛒 Résumé de votre commande
             </h3>
-            <div className="flex justify-between mb-1">
-              <span>Pizza Margherita x2</span>
-              <span>17,98€</span>
-            </div>
-            <div className="flex justify-between mb-1">
-              <span>Cheesecake x1</span>
-              <span>5,50€</span>
-            </div>
+            {items.length ? (
+              items.map((item, index) => (
+                <div key={index} className="flex justify-between mb-1">
+                  <span>
+                    Menu #{item.menuId} x{item.quantite}
+                  </span>
+                  <span>{(item.prix * item.quantite).toFixed(2)}€</span>
+                </div>
+              ))
+            ) : (
+              <p className="text-center text-gray-500">Votre panier est vide</p>
+            )}
             <div className="border-t border-gray-300 my-2"></div>
             <div className="flex justify-between font-bold text-lg">
               <span>Total</span>
-              <span>23,48€</span>
+              <span>{total.toFixed(2)}€</span>
             </div>
           </div>
 
           {/* Valider */}
           <motion.button
             type="submit"
+            disabled={loading || !items.length}
             whileHover={{ scale: 1.05, boxShadow: "0 0 25px #6F4E37" }}
-            className="w-full bg-[#6F4E37] text-white py-3 rounded-lg text-lg hover:bg-[#8B5E3C] transition"
+            className="w-full bg-[#6F4E37] text-white py-3 rounded-lg text-lg hover:bg-[#8B5E3C] transition disabled:opacity-50"
           >
-            ✅ Valider ma commande
+            {loading ? "⏳ Traitement..." : "✅ Valider ma commande"}
           </motion.button>
         </motion.form>
       </div>

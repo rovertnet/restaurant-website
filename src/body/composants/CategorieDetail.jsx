@@ -6,7 +6,7 @@ import {
 } from "../../services/categorieService";
 import { motion, AnimatePresence } from "framer-motion";
 import { ShoppingCart, Heart } from "lucide-react";
-import { useCart } from "../../context/CartContext"; // 🔥 import
+import { useCart } from "../../context/CartContext";
 
 const CategorieDetail = () => {
   const { id } = useParams();
@@ -14,15 +14,24 @@ const CategorieDetail = () => {
   const [categorie, setCategorie] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  const { addToCart } = useCart(); // 🔥 hook du panier
+  const { addToCart } = useCart();
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const cat = await getCategorieById(id);
         const menuList = await getMenusByCategorie(id);
+
+        // On ajoute imageUrl aux menus si pas défini
+        const menusWithImages = menuList.map((menu) => ({
+          ...menu,
+          imageUrl:
+            menu.image ||
+            "https://dummyimage.com/300x300/cccccc/ffffff&text=Plat",
+        }));
+
         setCategorie(cat);
-        setMenus(menuList);
+        setMenus(menusWithImages);
         setLoading(false);
       } catch (error) {
         console.error("Erreur de chargement :", error);
@@ -32,22 +41,21 @@ const CategorieDetail = () => {
     fetchData();
   }, [id]);
 
-  if (loading) {
-    return <p className="text-center py-10">Chargement...</p>;
-  }
-
-  if (!categorie) {
+  if (loading) return <p className="text-center py-10">Chargement...</p>;
+  if (!categorie)
     return (
       <p className="text-center py-10 text-red-500">Catégorie introuvable.</p>
     );
-  }
 
   return (
     <section className="min-h-screen bg-gray-50">
-      {/* Bannière */}
+      {/* Bannière de la catégorie */}
       <div className="relative w-full h-64 md:h-80">
         <img
-          src={categorie.imageUrl || "https://via.placeholder.com/1200x400"}
+          src={
+            categorie.imageUrl ||
+            "https://dummyimage.com/1200x400/cccccc/ffffff&text=Catégorie"
+          }
           alt={categorie.nom}
           className="w-full h-full object-cover"
         />
@@ -81,7 +89,7 @@ const CategorieDetail = () => {
                   className="bg-white rounded-2xl shadow-md overflow-hidden hover:shadow-lg transition"
                 >
                   <img
-                    src={item.image || "https://via.placeholder.com/300"}
+                    src={item.imageUrl}
                     alt={item.nom}
                     className="w-full h-48 object-cover"
                   />
@@ -100,7 +108,7 @@ const CategorieDetail = () => {
                       </span>
                       <div className="flex space-x-3">
                         <button
-                          onClick={() => addToCart(item)} // 🔥 ajoute au panier
+                          onClick={() => addToCart(item)}
                           className="p-2 bg-[#FF6B35] text-white rounded-full hover:bg-[#e65c2f] transition"
                         >
                           <ShoppingCart size={18} />
