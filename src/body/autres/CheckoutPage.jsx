@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form";
 import { motion } from "framer-motion";
 import { CreditCard, DollarSign } from "lucide-react";
 import toast, { Toaster } from "react-hot-toast";
-import { createCommande } from "../services/commandeService";
+import { createCommande } from "../../services/commandeService";
 
 export default function CheckoutPage() {
   const {
