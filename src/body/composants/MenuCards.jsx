@@ -121,7 +121,7 @@ export default function MenuCards() {
                     src={
                       item.image
                         ? `http://localhost:3000/uploads/menus/${item.image}`
-                        : "https://via.placeholder.com/300"
+                        : "https://picsum.photos/300/200" // <-- ici
                     }
                     alt={item.nom}
                     className="w-full h-48 object-cover"

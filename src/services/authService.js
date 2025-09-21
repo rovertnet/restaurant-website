@@ -1,12 +1,12 @@
 // src/services/authService.js
 import axios from "axios";
 
-const API_URL = import.meta.env.VITE_API_URL || "http://localhost:3000";
+const API_URL = import.meta.env.VITE_API_URL || "http://localhost:3000/auth"; // adapte à ton backend
 
 // Enregistrer un nouvel utilisateur
 export const register = async (userData) => {
   try {
-    const response = await axios.post(`${API_URL}/users/register`, userData);
+    const response = await axios.post(`${API_URL}/auth/register`, userData);
     return response.data;
   } catch (error) {
     throw error.response?.data || error;

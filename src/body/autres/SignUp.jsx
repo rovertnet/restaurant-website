@@ -14,13 +14,19 @@ export default function SignUp() {
       return;
     }
     try {
-      await registerUser(data);
+      // Mapper les champs pour correspondre au backend
+      await registerUser({
+        nom: data.name,
+        email: data.email,
+        motDePasse: data.password,
+      });
       toast.success("Compte créé avec succès !");
+      window.location.href = "/login";
       // Redirection après inscription
     } catch (err) {
       toast.error(err.message || "Erreur lors de l'inscription");
     }
-  };
+  };  
 
   return (
     <div className="bg-[#F8F3F0] min-h-screen flex items-center justify-center px-4">
@@ -60,7 +66,7 @@ export default function SignUp() {
           />
           <button
             type="submit"
-            className="w-full bg-[#6F4E37] text-white font-semibold py-3 rounded-lg hover:bg-[#8B5E3C] transition"
+            className="cursor-pointer  w-full bg-[#6F4E37] text-white font-semibold py-3 rounded-lg hover:bg-[#8B5E3C] transition"
           >
             ✅ S'inscrire
           </button>

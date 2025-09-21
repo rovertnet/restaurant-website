@@ -10,13 +10,17 @@ export default function Login() {
 
   const onSubmit = async (data) => {
     try {
-      await login(data);
+      await login({
+        email: data.email,
+        motDePasse: data.password,
+      });
       toast.success("Connexion réussie !");
+      window.location.href = "/menupage";
       // Redirection ou action après login
     } catch (err) {
       toast.error(err.message || "Erreur lors de la connexion");
     }
-  };
+  };  
 
   return (
     <div className="bg-[#F8F3F0] min-h-screen flex items-center justify-center px-4">
@@ -44,7 +48,7 @@ export default function Login() {
           />
           <button
             type="submit"
-            className="w-full bg-[#6F4E37] text-white font-semibold py-3 rounded-lg hover:bg-[#8B5E3C] transition"
+            className="cursor-pointer  w-full bg-[#6F4E37] text-white font-semibold py-3 rounded-lg hover:bg-[#8B5E3C] transition"
           >
             🔑 Se connecter
           </button>
