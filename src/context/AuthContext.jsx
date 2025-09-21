@@ -1,5 +1,4 @@
-// src/context/AuthContext.jsx
-import { createContext, useState, useEffect } from "react";
+import { createContext, useState, useEffect, useContext } from "react";
 import { authService } from "../services/authService";
 
 export const AuthContext = createContext();
@@ -9,7 +8,7 @@ export const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     const token = authService.getCurrentUser();
-    if (token) setUser({ token }); // tu peux décoder le token pour plus d’infos
+    if (token) setUser({ token });
   }, []);
 
   const login = async (credentials) => {
@@ -34,3 +33,6 @@ export const AuthProvider = ({ children }) => {
     </AuthContext.Provider>
   );
 };
+
+// ✅ Hook pour utiliser le contexte plus facilement
+export const useAuth = () => useContext(AuthContext);

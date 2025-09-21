@@ -1,59 +1,54 @@
-// context/CartContext.jsx
-import React, { createContext, useContext, useReducer } from "react";
+import { createContext, useContext, useState } from "react";
 
 const CartContext = createContext();
 
-const initialState = {
-  items: [],
-};
+export function CartProvider({ children }) {
+  const [cartItems, setCartItems] = useState([]);
 
-function cartReducer(state, action) {
-  switch (action.type) {
-    case "ADD_TO_CART":
-      // Vérifier si l’item est déjà dans le panier
-      const exists = state.items.find((i) => i.id === action.payload.id);
-      if (exists) {
-        return {
-          ...state,
-          items: state.items.map((i) =>
-            i.id === action.payload.id ? { ...i, quantity: i.quantity + 1 } : i
-          ),
-        };
+  // Ajouter un produit au panier
+  const addToCart = (product) => {
+    setCartItems((prev) => {
+      const existing = prev.find((item) => item.id === product.id);
+      if (existing) {
+        return prev.map((item) =>
+          item.id === product.id
+            ? { ...item, quantity: item.quantity + 1 }
+            : item
+        );
+      } else {
+        return [...prev, { ...product, quantity: 1 }];
       }
-      return {
-        ...state,
-        items: [...state.items, { ...action.payload, quantity: 1 }],
-      };
+    });
+  };
 
-    case "REMOVE_FROM_CART":
-      return {
-        ...state,
-        items: state.items.filter((i) => i.id !== action.payload),
-      };
+  // Mettre à jour la quantité
+  const updateQuantity = (id, delta) => {
+    setCartItems((prev) =>
+      prev
+        .map((item) =>
+          item.id === id
+            ? { ...item, quantity: Math.max(item.quantity + delta, 1) }
+            : item
+        )
+        .filter((item) => item.quantity > 0)
+    );
+  };
 
-    case "CLEAR_CART":
-      return initialState;
+  // Supprimer un item
+  const removeItem = (id) => {
+    setCartItems((prev) => prev.filter((item) => item.id !== id));
+  };
 
-    default:
-      return state;
-  }
-}
-
-export const CartProvider = ({ children }) => {
-  const [state, dispatch] = useReducer(cartReducer, initialState);
-
-  const addToCart = (item) => dispatch({ type: "ADD_TO_CART", payload: item });
-  const removeFromCart = (id) =>
-    dispatch({ type: "REMOVE_FROM_CART", payload: id });
-  const clearCart = () => dispatch({ type: "CLEAR_CART" });
+  // Vider le panier
+  const clearCart = () => setCartItems([]);
 
   return (
     <CartContext.Provider
-      value={{ items: state.items, addToCart, removeFromCart, clearCart }}
+      value={{ cartItems, addToCart, updateQuantity, removeItem, clearCart }}
     >
       {children}
     </CartContext.Provider>
   );
-};
+}
 
 export const useCart = () => useContext(CartContext);
