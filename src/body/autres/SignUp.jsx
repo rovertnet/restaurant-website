@@ -1,7 +1,27 @@
-import React from "react";
+import React, { useContext } from "react";
+import { useForm } from "react-hook-form";
+import { toast } from "react-hot-toast";
+import { AuthContext } from "../../context/AuthContext";
 import { motion } from "framer-motion";
 
 export default function SignUp() {
+  const { register: registerUser } = useContext(AuthContext);
+  const { register: formRegister, handleSubmit } = useForm();
+
+  const onSubmit = async (data) => {
+    if (data.password !== data.confirmPassword) {
+      toast.error("Les mots de passe ne correspondent pas");
+      return;
+    }
+    try {
+      await registerUser(data);
+      toast.success("Compte créé avec succès !");
+      // Redirection après inscription
+    } catch (err) {
+      toast.error(err.message || "Erreur lors de l'inscription");
+    }
+  };
+
   return (
     <div className="bg-[#F8F3F0] min-h-screen flex items-center justify-center px-4">
       <motion.div
@@ -10,37 +30,34 @@ export default function SignUp() {
         transition={{ duration: 0.6 }}
         className="bg-white rounded-2xl shadow-lg p-8 max-w-md w-full"
       >
-        {/* Titre */}
         <h1 className="text-3xl font-bold text-center text-[#6F4E37] mb-6">
           Créer un compte 👤
         </h1>
-        <p className="text-gray-500 text-center mb-6">
-          Inscrivez-vous pour passer vos commandes plus rapidement
-        </p>
-
-        {/* Formulaire */}
-        <form className="space-y-4">
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           <input
             type="text"
             placeholder="Nom complet"
+            {...formRegister("name")}
             className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:border-[#6F4E37]"
           />
           <input
             type="email"
             placeholder="Email"
+            {...formRegister("email")}
             className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:border-[#6F4E37]"
           />
           <input
             type="password"
             placeholder="Mot de passe"
+            {...formRegister("password")}
             className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:border-[#6F4E37]"
           />
           <input
             type="password"
             placeholder="Confirmer le mot de passe"
+            {...formRegister("confirmPassword")}
             className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:border-[#6F4E37]"
           />
-
           <button
             type="submit"
             className="w-full bg-[#6F4E37] text-white font-semibold py-3 rounded-lg hover:bg-[#8B5E3C] transition"
@@ -48,8 +65,6 @@ export default function SignUp() {
             ✅ S'inscrire
           </button>
         </form>
-
-        {/* Lien vers connexion */}
         <p className="text-center text-gray-600 mt-4">
           Vous avez déjà un compte ?{" "}
           <a
