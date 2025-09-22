@@ -1,26 +1,27 @@
-import React, { useContext } from "react";
+import React from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "react-hot-toast";
-import { AuthContext } from "../../context/AuthContext";
 import { motion } from "framer-motion";
+import axios from "axios";
+import { useAuth } from "../../context/AuthContext";
 
 export default function Login() {
-  const { login } = useContext(AuthContext);
+  const { login } = useAuth();
   const { register: formRegister, handleSubmit } = useForm();
 
   const onSubmit = async (data) => {
     try {
-      await login({
+      const user = await login({
         email: data.email,
         motDePasse: data.password,
       });
-      toast.success("Connexion réussie !");
+      console.log("Utilisateur connecté :", user);
       window.location.href = "/menupage";
-      // Redirection ou action après login
     } catch (err) {
+      console.error(err);
       toast.error(err.message || "Erreur lors de la connexion");
     }
-  };  
+  };
 
   return (
     <div className="bg-[#F8F3F0] min-h-screen flex items-center justify-center px-4">
@@ -48,7 +49,7 @@ export default function Login() {
           />
           <button
             type="submit"
-            className="cursor-pointer  w-full bg-[#6F4E37] text-white font-semibold py-3 rounded-lg hover:bg-[#8B5E3C] transition"
+            className="cursor-pointer w-full bg-[#6F4E37] text-white font-semibold py-3 rounded-lg hover:bg-[#8B5E3C] transition"
           >
             🔑 Se connecter
           </button>

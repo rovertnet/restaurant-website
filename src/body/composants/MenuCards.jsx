@@ -12,7 +12,7 @@ import { addItemToPanier } from "../../services/panierService";
 
 export default function MenuCards() {
   const { wishlist, toggleWishlist } = useWishlist();
-  const { user } = useAuth(); // hook à l'intérieur du composant
+  const { user, token, loading: authLoading } = useAuth();
 
   const [menuItems, setMenuItems] = useState([]);
   const [categories, setCategories] = useState([]);
@@ -21,19 +21,17 @@ export default function MenuCards() {
 
   // Ajouter un menu au panier
   const handleAddToCart = async (menu) => {
+    if (authLoading) return; // on attend que l'user soit chargé
     if (!user) return alert("Vous devez être connecté pour ajouter au panier");
 
     try {
-      await addItemToPanier({
-        menuId: menu.id,
-        quantite: 1,
-      });
+      await addItemToPanier({ menuId: menu.id, quantite: 1 }, token);
       alert(`${menu.nom} ajouté au panier !`);
     } catch (err) {
       console.error(err);
       alert("Erreur lors de l'ajout au panier");
     }
-  };
+  };  
 
   useEffect(() => {
     const fetchData = async () => {
@@ -161,12 +159,14 @@ export default function MenuCards() {
                     <p className="text-gray-600 mt-1">
                       {item.prix ? `${item.prix} €` : "Prix non disponible"}
                     </p>
-                    <button
-                      className="mt-4 w-full bg-yellow-400 text-white py-2 rounded-lg hover:bg-yellow-500 transition"
-                      onClick={() => handleAddToCart(item)}
-                    >
-                      Ajouter au panier 🛒
-                    </button>
+                    {!authLoading && (
+                      <button
+                        className="mt-4 w-full bg-yellow-400 text-white py-2 rounded-lg hover:bg-yellow-500 transition"
+                        onClick={() => handleAddToCart(item)}
+                      >
+                        Ajouter au panier 🛒
+                      </button>
+                    )}
                   </div>
                 </motion.div>
               );

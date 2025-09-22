@@ -2,31 +2,38 @@ import axios from "axios";
 
 const API_URL = import.meta.env.VITE_API_URL + "/panier";
 
-// Ajouter un article au panier
-export const addItemToPanier = async (data) => {
-  try {
-    const res = await axios.post(`${API_URL}/item`, data);
-    return res.data;
-  } catch (err) {
-    console.error("Erreur lors de l'ajout au panier :", err);
-    throw err;
-  }
+const getAuthAxios = (token) => {
+  return axios.create({
+    baseURL: API_URL,
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
 };
 
-// Récupérer le panier de l'utilisateur connecté
-export const getPanier = async () => {
-  const res = await axios.get(API_URL);
+export const addItemToPanier = async (data, token) => {
+  const api = getAuthAxios(token);
+  const res = await api.post(`/item`, data);
   return res.data;
 };
 
-// Supprimer un article
-export const removeItemFromPanier = async (id) => {
-  const res = await axios.delete(`${API_URL}/item/${id}`);
+export const getPanier = async (token) => {
+  const api = axios.create({
+    baseURL: API_URL,
+    headers: { Authorization: `Bearer ${token}` },
+  });
+  const res = await api.get(`/`);
   return res.data;
 };
 
-// Vider le panier
-export const clearPanier = async () => {
-  const res = await axios.delete(`${API_URL}/clear`);
+export const removeItemFromPanier = async (itemId, token) => {
+  const api = getAuthAxios(token);
+  const res = await api.delete(`/item/${itemId}`);
+  return res.data;
+};
+
+export const clearPanier = async (token) => {
+  const api = getAuthAxios(token);
+  const res = await api.delete(`/clear`);
   return res.data;
 };

@@ -4,15 +4,16 @@ import {
   removeItemFromPanier,
   clearPanier,
 } from "../../services/panierService";
+import { useAuth } from "../../context/AuthContext";
 
 export default function CartPage() {
+  const { token } = useAuth(); // récupère le token JWT
   const [panier, setPanier] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  // Charger le panier du user connecté
   const fetchPanier = async () => {
     try {
-      const data = await getPanier();
+      const data = await getPanier(token); // ⬅️ on passe le token
       setPanier(data);
     } catch (err) {
       console.error("Erreur lors du chargement du panier :", err);
@@ -22,23 +23,21 @@ export default function CartPage() {
   };
 
   useEffect(() => {
-    fetchPanier();
-  }, []);
+    if (token) fetchPanier();
+  }, [token]);
 
-  // Supprimer un article
   const handleRemoveItem = async (itemId) => {
     try {
-      await removeItemFromPanier(itemId);
-      fetchPanier(); // recharger le panier
+      await removeItemFromPanier(itemId, token);
+      fetchPanier();
     } catch (err) {
       console.error("Erreur lors de la suppression :", err);
     }
   };
 
-  // Vider le panier
   const handleClearPanier = async () => {
     try {
-      await clearPanier();
+      await clearPanier(token);
       fetchPanier();
     } catch (err) {
       console.error("Erreur lors du vidage du panier :", err);
@@ -46,7 +45,6 @@ export default function CartPage() {
   };
 
   if (loading) return <p>Chargement du panier...</p>;
-
   if (!panier || panier.items.length === 0) {
     return (
       <p className="text-center text-gray-500">Votre panier est vide 🛒</p>
@@ -56,7 +54,6 @@ export default function CartPage() {
   return (
     <section className="container mx-auto px-4 py-10">
       <h2 className="text-2xl font-bold mb-6">🛒 Mon Panier</h2>
-
       <div className="space-y-4">
         {panier.items.map((item) => (
           <div

@@ -10,17 +10,16 @@ import {
 import { useAuth } from "../../context/AuthContext";
 import { addItemToPanier } from "../../services/panierService";
 
-
 export default function MenuCards() {
   const { wishlist, toggleWishlist } = useWishlist();
-  const { user } = useAuth(); // ✅ hook à l'intérieur du composant
+  const { user } = useAuth(); // hook à l'intérieur du composant
 
   const [menuItems, setMenuItems] = useState([]);
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
   const [activeCategory, setActiveCategory] = useState(null);
 
-  // handleAddToCart doit être à l'intérieur pour accéder à `user`
+  // Ajouter un menu au panier
   const handleAddToCart = async (menu) => {
     if (!user) return alert("Vous devez être connecté pour ajouter au panier");
 
@@ -136,12 +135,12 @@ export default function MenuCards() {
                     </motion.button>
                   </div>
 
-                  {/* Image avec effet de zoom au survol */}
+                  {/* Image */}
                   <motion.img
                     src={
                       item.image
                         ? `http://localhost:3000/uploads/menus/${item.image}`
-                        : "https://picsum.photos/300/200" // <-- ici
+                        : "https://picsum.photos/300/200"
                     }
                     alt={item.nom}
                     className="w-full h-48 object-cover"
@@ -154,19 +153,16 @@ export default function MenuCards() {
                     <h3 className="text-xl font-semibold text-gray-800">
                       {item.nom}
                     </h3>
-
                     {item.categorie?.nom && (
                       <p className="text-gray-500 text-sm mt-1">
                         Catégorie : {item.categorie.nom}
                       </p>
                     )}
-
                     <p className="text-gray-600 mt-1">
                       {item.prix ? `${item.prix} €` : "Prix non disponible"}
                     </p>
-
                     <button
-                      className="mt-4 w-full ..."
+                      className="mt-4 w-full bg-yellow-400 text-white py-2 rounded-lg hover:bg-yellow-500 transition"
                       onClick={() => handleAddToCart(item)}
                     >
                       Ajouter au panier 🛒

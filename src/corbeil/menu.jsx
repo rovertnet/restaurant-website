@@ -1,147 +1,97 @@
 import React, { useEffect, useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { Heart } from "lucide-react";
-import { useWishlist } from "../../context/WishlistContext";
-import { getMenus } from "../../services/menuService";
 import {
-  getCategories,
-  getMenusByCategorie,
-} from "../../services/categorieService";
+  getPanier,
+  removeItemFromPanier,
+  clearPanier,
+} from "../../services/panierService";
+import { useAuth } from "../../context/AuthContext";
 
-export default function MenuCards() {
-  const { wishlist, toggleWishlist } = useWishlist();
-  const [menuItems, setMenuItems] = useState([]);
-  const [categories, setCategories] = useState([]);
+export default function CartPage() {
+  const { token } = useAuth(); // récupère le token JWT
+  const [panier, setPanier] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [activeCategory, setActiveCategory] = useState(null);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      const cats = await getCategories();
-      setCategories(cats);
-
-      const menus = await getMenus();
-      setMenuItems(menus);
-
+  const fetchPanier = async () => {
+    try {
+      const data = await getPanier(token); // ⬅️ on passe le token
+      setPanier(data);
+    } catch (err) {
+      console.error("Erreur lors du chargement du panier :", err);
+    } finally {
       setLoading(false);
-    };
-    fetchData();
-  }, []);
-
-  const handleCategoryClick = async (id) => {
-    setActiveCategory(id);
-    if (id === null) {
-      const menus = await getMenus();
-      setMenuItems(menus);
-    } else {
-      const menus = await getMenusByCategorie(id);
-      setMenuItems(menus);
     }
   };
 
-  if (loading) {
-    return <p className="text-center text-gray-500">Chargement...</p>;
+  useEffect(() => {
+    if (token) fetchPanier();
+  }, [token]);
+
+  const handleRemoveItem = async (itemId) => {
+    try {
+      await removeItemFromPanier(itemId, token);
+      fetchPanier();
+    } catch (err) {
+      console.error("Erreur lors de la suppression :", err);
+    }
+  };
+
+  const handleClearPanier = async () => {
+    try {
+      await clearPanier(token);
+      fetchPanier();
+    } catch (err) {
+      console.error("Erreur lors du vidage du panier :", err);
+    }
+  };
+
+  if (loading) return <p>Chargement du panier...</p>;
+  if (!panier || panier.items.length === 0) {
+    return (
+      <p className="text-center text-gray-500">Votre panier est vide 🛒</p>
+    );
   }
 
   return (
     <section className="container mx-auto px-4 py-10">
-      <h2 className="text-3xl font-bold text-center mb-8 text-gray-800">
-        🍽️ Notre Menu
-      </h2>
-
-      {/* Boutons catégories */}
-      <div className="flex flex-wrap gap-2 justify-center mb-6">
-        <button
-          onClick={() => handleCategoryClick(null)}
-          className={`px-4 py-2 rounded-full border transition-colors ${
-            activeCategory === null
-              ? "bg-yellow-400 text-white"
-              : "bg-white text-gray-700"
-          }`}
-        >
-          Tous
-        </button>
-        {categories.map((cat) => (
-          <button
-            key={cat.id}
-            onClick={() => handleCategoryClick(cat.id)}
-            className={`px-4 py-2 rounded-full border transition-colors ${
-              activeCategory === cat.id
-                ? "bg-yellow-400 text-white"
-                : "bg-white text-gray-700"
-            }`}
+      <h2 className="text-2xl font-bold mb-6">🛒 Mon Panier</h2>
+      <div className="space-y-4">
+        {panier.items.map((item) => (
+          <div
+            key={item.id}
+            className="flex items-center justify-between bg-white p-4 rounded-lg shadow"
           >
-            {cat.nom}
-          </button>
+            <div>
+              <h3 className="font-semibold">{item.menu.nom}</h3>
+              <p className="text-gray-500">
+                Quantité : {item.quantite} | Prix : {item.menu.prix} €
+              </p>
+            </div>
+            <button
+              onClick={() => handleRemoveItem(item.id)}
+              className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
+            >
+              Supprimer
+            </button>
+          </div>
         ))}
       </div>
 
-      {/* Liste des menus avec animation */}
-      {menuItems.length === 0 ? (
-        <p className="text-center text-gray-500">Aucun plat disponible.</p>
-      ) : (
-        <motion.div
-          layout
-          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8"
+      <div className="mt-6 flex justify-between items-center">
+        <p className="font-bold text-lg">
+          Total :{" "}
+          {panier.items.reduce(
+            (sum, item) => sum + item.quantite * item.menu.prix,
+            0
+          )}{" "}
+          €
+        </p>
+        <button
+          onClick={handleClearPanier}
+          className="px-4 py-2 bg-gray-700 text-white rounded hover:bg-gray-900"
         >
-          <AnimatePresence>
-            {menuItems.map((item) => {
-              const isInWishlist = wishlist.some((w) => w.id === item.id);
-              return (
-                <motion.div
-                  key={item.id}
-                  layout
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.9 }}
-                  transition={{ duration: 0.3 }}
-                  className="relative bg-white rounded-2xl shadow-lg overflow-hidden"
-                >
-                  {/* Bouton wishlist */}
-                  <div className="absolute top-3 right-3 z-10">
-                    <motion.button
-                      onClick={() => toggleWishlist(item)}
-                      whileTap={{ scale: 1.2 }}
-                      animate={isInWishlist ? { scale: [1, 1.3, 1] } : {}}
-                      transition={{ duration: 0.4, type: "spring" }}
-                      className="bg-white rounded-full p-2 shadow hover:scale-110 transition-transform"
-                    >
-                      <Heart
-                        size={20}
-                        className={`${
-                          isInWishlist
-                            ? "fill-red-500 text-red-500"
-                            : "text-gray-400"
-                        } transition-colors duration-300`}
-                      />
-                    </motion.button>
-                  </div>
-
-                  {/* Image */}
-                  <img
-                    src={item.image || "https://via.placeholder.com/300"}
-                    alt={item.nom}
-                    className="w-full h-48 object-cover"
-                  />
-
-                  {/* Contenu */}
-                  <div className="p-4">
-                    <h3 className="text-xl font-semibold text-gray-800">
-                      {item.nom}
-                    </h3>
-                    <p className="text-gray-600 mt-1">
-                      {item.prix ? `${item.prix} €` : "Prix non disponible"}
-                    </p>
-                    <button className="mt-4 w-full bg-yellow-400 text-gray-900 font-semibold py-2 px-4 rounded-full hover:bg-yellow-500 transition">
-                      Ajouter au panier 🛒
-                    </button>
-                  </div>
-                </motion.div>
-              );
-            })}
-          </AnimatePresence>
-        </motion.div>
-      )}
+          Vider le panier
+        </button>
+      </div>
     </section>
   );
 }

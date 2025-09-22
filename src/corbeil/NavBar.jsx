@@ -1,14 +1,28 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X, ShoppingCart, User, Heart } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 export default function NavBar() {
   const [isOpen, setIsOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
+  const location = useLocation();
 
   const toggleMenu = () => setIsOpen(!isOpen);
-
   const closeMenu = () => setIsOpen(false);
+
+  // Detect scroll only on home
+  useEffect(() => {
+    if (location.pathname === "/") {
+      const handleScroll = () => {
+        setIsScrolled(window.scrollY > 50);
+      };
+      window.addEventListener("scroll", handleScroll);
+      return () => window.removeEventListener("scroll", handleScroll);
+    } else {
+      setIsScrolled(true); // Other pages = always opaque
+    }
+  }, [location.pathname]);
 
   const mobileMenuVariants = {
     hidden: { y: "-100%", opacity: 0 },
@@ -29,48 +43,57 @@ export default function NavBar() {
       initial={{ y: -50, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.5 }}
-      className="bg-gray-800 fixed w-full z-50"
+      className={`fixed top-0 w-full z-50 transition-all duration-500 ${
+        isScrolled
+          ? "bg-gray-900/90 backdrop-blur-md shadow-md"
+          : "bg-transparent"
+      }`}
     >
       <div className="container mx-auto flex justify-between items-center p-4">
         {/* Logo */}
         <div className="text-white text-2xl font-bold">
-          <a href="/" className="hover:text-gray-300">
-            <img src="../../public/rovertfood.png" alt="rovert food" className="w-14 h-14" />
-          </a>
+          <Link to="/" className="hover:text-gray-300">
+            <img
+              src="../../public/rovertfood.png"
+              alt="rovert food"
+              className="w-14 h-14"
+            />
+          </Link>
         </div>
+
         {/* Desktop Menu */}
         <ul className="hidden md:flex space-x-6 items-center">
           <li>
-            <a href="/" className="text-gray-300 hover:text-white">
+            <Link to="/" className="text-gray-300 hover:text-white">
               Accueil
-            </a>
+            </Link>
           </li>
           <li>
-            <a href="/menupage" className="text-gray-300 hover:text-white">
+            <Link to="/menupage" className="text-gray-300 hover:text-white">
               Menu
-            </a>
+            </Link>
           </li>
           <li>
-            <a href="/about" className="text-gray-300 hover:text-white">
+            <Link to="/about" className="text-gray-300 hover:text-white">
               A propos
-            </a>
+            </Link>
           </li>
           <li>
-            <a href="/contact" className="text-gray-300 hover:text-white">
+            <Link to="/contact" className="text-gray-300 hover:text-white">
               Contact
-            </a>
+            </Link>
           </li>
           {/* Icons */}
           <li className="flex space-x-4 ml-4">
-            <a href="/wishlist" className="text-gray-300 hover:text-white">
+            <Link to="/wishlist" className="text-gray-300 hover:text-white">
               <Heart />
-            </a>
-            <a href="/cart" className="text-gray-300 hover:text-white">
+            </Link>
+            <Link to="/cart" className="text-gray-300 hover:text-white">
               <ShoppingCart />
-            </a>
-            <a href="/login" className="text-gray-300 hover:text-white">
+            </Link>
+            <Link to="/login" className="text-gray-300 hover:text-white">
               <User />
-            </a>
+            </Link>
           </li>
         </ul>
 
@@ -88,7 +111,7 @@ export default function NavBar() {
       {/* Mobile Menu */}
       <AnimatePresence>
         {isOpen && (
-          <motion.div 
+          <motion.div
             key="mobile-menu"
             initial="hidden"
             animate="visible"
@@ -130,27 +153,27 @@ export default function NavBar() {
 
             {/* Bottom Icons */}
             <div className="flex space-x-10">
-              <a
-                href="/wishlist"
+              <Link
+                to="/wishlist"
                 className="text-white hover:text-gray-300"
                 onClick={closeMenu}
               >
                 <Heart size={32} />
-              </a>
-              <a
-                href="/cart"
+              </Link>
+              <Link
+                to="/cart"
                 className="text-white hover:text-gray-300"
                 onClick={closeMenu}
               >
                 <ShoppingCart size={32} />
-              </a>
-              <a
-                href="/login"
+              </Link>
+              <Link
+                to="/login"
                 className="text-white hover:text-gray-300"
                 onClick={closeMenu}
               >
                 <User size={32} />
-              </a>
+              </Link>
             </div>
           </motion.div>
         )}

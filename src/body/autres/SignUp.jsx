@@ -1,11 +1,11 @@
 import React, { useContext } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "react-hot-toast";
-import { AuthContext } from "../../context/AuthContext";
+import {useAuth } from "../../context/AuthContext";
 import { motion } from "framer-motion";
 
 export default function SignUp() {
-  const { register: registerUser } = useContext(AuthContext);
+  const { register: registerUser } = useAuth(); // ✅ ici on récupère register depuis le hook;
   const { register: formRegister, handleSubmit } = useForm();
 
   const onSubmit = async (data) => {
