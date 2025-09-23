@@ -21,7 +21,6 @@ export default function MenuCards() {
 
   // Ajouter un menu au panier
   const handleAddToCart = async (menu) => {
-    if (authLoading) return; // on attend que l'user soit chargé
     if (!user) return alert("Vous devez être connecté pour ajouter au panier");
 
     try {
