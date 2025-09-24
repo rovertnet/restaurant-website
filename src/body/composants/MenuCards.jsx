@@ -9,10 +9,12 @@ import {
 } from "../../services/categorieService";
 import { useAuth } from "../../context/AuthContext";
 import { addItemToPanier } from "../../services/panierService";
+import { toast } from "react-hot-toast";
 
 export default function MenuCards() {
   const { wishlist, toggleWishlist } = useWishlist();
   const { user, token, loading: authLoading } = useAuth();
+  const [addedQuantities, setAddedQuantities] = useState({});
 
   const [menuItems, setMenuItems] = useState([]);
   const [categories, setCategories] = useState([]);
@@ -21,16 +23,27 @@ export default function MenuCards() {
 
   // Ajouter un menu au panier
   const handleAddToCart = async (menu) => {
-    if (!user) return alert("Vous devez être connecté pour ajouter au panier");
+    if (!user) return (window.location.href = "/login");
 
     try {
-      await addItemToPanier({ menuId: menu.id, quantite: 1 }, token);
-      alert(`${menu.nom} ajouté au panier !`);
+      const res = await addItemToPanier(
+        { menuId: menu.id, quantite: 1 },
+        token
+      );
+
+      // Mettre à jour le state local pour la quantité ajoutée
+      setAddedQuantities((prev) => ({
+        ...prev,
+        [menu.id]: res.quantite,
+      }));
+
+      // Afficher un toast
+      toast.success(`${menu.nom} ajouté au panier !`);
     } catch (err) {
       console.error(err);
-      alert("Erreur lors de l'ajout au panier");
+      toast.error("Erreur lors de l'ajout au panier");
     }
-  };  
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -165,6 +178,12 @@ export default function MenuCards() {
                       >
                         Ajouter au panier 🛒
                       </button>
+                    )}
+                    {addedQuantities[item.id] && (
+                      <p className="mt-1 text-green-600 text-sm">
+                        {addedQuantities[item.id]} ajouté
+                        {addedQuantities[item.id] > 1 ? "s" : ""}
+                      </p>
                     )}
                   </div>
                 </motion.div>
