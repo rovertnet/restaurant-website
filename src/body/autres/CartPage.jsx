@@ -64,7 +64,7 @@ export default function CartPage() {
   );
 
   return (
-    <section className="container mx-auto px-4 py-10">
+    <section className="container mx-auto px-4 py-10 my-40 max-w-3xl bg-[#F8F3F0] rounded-lg shadow">
       <h2 className="text-2xl font-bold mb-6">🛒 Mon Panier</h2>
 
       <div className="space-y-4">
