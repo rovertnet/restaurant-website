@@ -38,10 +38,17 @@ export default function CheckoutPage() {
     try {
       const commandeData = {
         ...data,
-        userId: 1, // ID de l'utilisateur connecté
-        items,
+        userId: 1, // à remplacer par l'utilisateur connecté
+        items: items.map((item) => ({
+          menuId: item.menuId, // ✅ correction ici
+          quantite: item.quantite,
+          prix: item.prix,
+        })),
         total,
       };
+
+      // 🔍 debug : voir ce qui part vers ton backend
+      console.log("📦 Données envoyées à l'API :", commandeData);
 
       await createCommande(commandeData);
       toast.success("Commande validée avec succès !");
@@ -49,12 +56,12 @@ export default function CheckoutPage() {
       setItems([]);
       setTotal(0);
     } catch (error) {
-      console.error(error);
+      console.error("❌ Erreur API :", error);
       toast.error("Erreur lors de la commande. Merci de réessayer !");
     } finally {
       setLoading(false);
     }
-  };
+  };    
 
   return (
     <div className="bg-[#F8F3F0] min-h-screen py-32">
