@@ -11,8 +11,8 @@ export default function CheckoutPage() {
     handleSubmit,
     setValue,
     watch,
-    formState: { errors },
-  } = useForm();
+    formState: { errors, isValid },
+  } = useForm({ mode: "onChange" }); // important : mode onChange pour activer en direct
   const [items, setItems] = useState([]);
   const [total, setTotal] = useState(0);
   const [loading, setLoading] = useState(false);
@@ -61,7 +61,7 @@ export default function CheckoutPage() {
     } finally {
       setLoading(false);
     }
-  };    
+  };
 
   return (
     <div className="bg-[#F8F3F0] min-h-screen py-32">
@@ -170,23 +170,34 @@ export default function CheckoutPage() {
 
           {/* Résumé */}
           <div className="bg-gray-100 p-4 rounded-lg">
-            <h3 className="text-lg font-semibold text-[#6F4E37] mb-2">
+            <h3 className="text-lg font-semibold text-[#6F4E37] mb-3">
               🛒 Résumé de votre commande
             </h3>
+
             {items.length ? (
               items.map((item, index) => (
-                <div key={index} className="flex justify-between mb-1">
-                  <span>
-                    Menu #{item.menuId} x{item.quantite}
+                <div
+                  key={index}
+                  className="flex justify-between items-center border-b border-gray-200 py-2"
+                >
+                  <div>
+                    <p className="font-medium text-[#6F4E37]">
+                      {item.nom || `Menu #${item.menuId}`}
+                    </p>
+                    <p className="text-sm text-gray-500">
+                      {item.quantite} x {item.prix.toFixed(2)}€
+                    </p>
+                  </div>
+                  <span className="font-semibold">
+                    {(item.prix * item.quantite).toFixed(2)}€
                   </span>
-                  <span>{(item.prix * item.quantite).toFixed(2)}€</span>
                 </div>
               ))
             ) : (
               <p className="text-center text-gray-500">Votre panier est vide</p>
             )}
-            <div className="border-t border-gray-300 my-2"></div>
-            <div className="flex justify-between font-bold text-lg">
+
+            <div className="flex justify-between font-bold text-lg mt-4">
               <span>Total</span>
               <span>{total.toFixed(2)}€</span>
             </div>
@@ -195,7 +206,7 @@ export default function CheckoutPage() {
           {/* Valider */}
           <motion.button
             type="submit"
-            disabled={loading || !items.length}
+            disabled={loading || !items.length || !isValid}
             whileHover={{ scale: 1.05, boxShadow: "0 0 25px #6F4E37" }}
             className="w-full bg-[#6F4E37] text-white py-3 rounded-lg text-lg hover:bg-[#8B5E3C] transition disabled:opacity-50"
           >
