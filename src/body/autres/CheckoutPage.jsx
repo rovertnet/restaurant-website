@@ -4,6 +4,8 @@ import { motion } from "framer-motion";
 import { CreditCard, DollarSign } from "lucide-react";
 import toast, { Toaster } from "react-hot-toast";
 import { createCommande } from "../../services/commandeService";
+import { getPanier } from "../../services/panierService";
+import { useAuth } from "../../context/AuthContext";
 
 export default function CheckoutPage() {
   const {
@@ -12,56 +14,57 @@ export default function CheckoutPage() {
     setValue,
     watch,
     formState: { errors, isValid },
-  } = useForm({ mode: "onChange" }); // important : mode onChange pour activer en direct
-  const [items, setItems] = useState([]);
-  const [total, setTotal] = useState(0);
+  } = useForm({ mode: "onChange" });
+
   const [loading, setLoading] = useState(false);
+  const { token } = useAuth();
+  const [panier, setPanier] = useState(null);
 
   const paiement = watch("paiement", "Carte");
 
-  // Charger le panier depuis localStorage
   useEffect(() => {
-    const storedCart = JSON.parse(localStorage.getItem("cart")) || [];
-    setItems(storedCart);
-    const totalPrice = storedCart.reduce(
-      (sum, item) => sum + item.prix * item.quantite,
-      0
-    );
-    setTotal(totalPrice);
-    setValue("paiement", "Carte");
-  }, [setValue]);
+    if (token) {
+      getPanier(token)
+        .then((data) => setPanier(data))
+        .catch((err) => console.error(err));
+    }
+  }, [token]);
 
   const onSubmit = async (data) => {
-    if (!items.length) return toast.error("Votre panier est vide !");
+    if (!panier || panier.length === 0)
+      return toast.error("Votre panier est vide !");
     setLoading(true);
 
     try {
       const commandeData = {
         ...data,
-        userId: 1, // à remplacer par l'utilisateur connecté
-        items: items.map((item) => ({
-          menuId: item.menuId, // ✅ correction ici
+        userId: 1,
+        items: panier.map((item) => ({
+          menuId: item.menu.id,
           quantite: item.quantite,
-          prix: item.prix,
+          prix: item.menu.prix,
         })),
-        total,
+        total: panier.reduce(
+          (sum, item) => sum + item.menu.prix * item.quantite,
+          0
+        ),
       };
 
-      // 🔍 debug : voir ce qui part vers ton backend
-      console.log("📦 Données envoyées à l'API :", commandeData);
-
       await createCommande(commandeData);
-      toast.success("Commande validée avec succès !");
-      localStorage.removeItem("cart");
-      setItems([]);
-      setTotal(0);
-    } catch (error) {
-      console.error("❌ Erreur API :", error);
-      toast.error("Erreur lors de la commande. Merci de réessayer !");
+      toast.success("Commande validée !");
+      setPanier([]);
+    } catch (err) {
+      console.error(err);
+      toast.error("Erreur lors de la commande.");
     } finally {
       setLoading(false);
     }
   };
+  
+  // ⚡ Loading condition dans le JSX
+  if (!panier) {
+    return <p className="text-center mt-20">Chargement du résumé...</p>;
+  }
 
   return (
     <div className="bg-[#F8F3F0] min-h-screen py-32">
@@ -169,46 +172,51 @@ export default function CheckoutPage() {
           </div>
 
           {/* Résumé */}
-          <div className="bg-gray-100 p-4 rounded-lg">
-            <h3 className="text-lg font-semibold text-[#6F4E37] mb-3">
-              🛒 Résumé de votre commande
-            </h3>
+          <div className="bg-white shadow-lg rounded-xl p-6">
+            <h2 className="text-xl font-bold mb-4">🧾 Résumé de la commande</h2>
 
-            {items.length ? (
-              items.map((item, index) => (
-                <div
-                  key={index}
-                  className="flex justify-between items-center border-b border-gray-200 py-2"
-                >
-                  <div>
-                    <p className="font-medium text-[#6F4E37]">
-                      {item.nom || `Menu #${item.menuId}`}
-                    </p>
-                    <p className="text-sm text-gray-500">
-                      {item.quantite} x {item.prix.toFixed(2)}€
-                    </p>
+            {panier.length > 0 ? (
+              <>
+                {panier.map((item) => (
+                  <div
+                    key={item.id}
+                    className="flex justify-between items-center border-b pb-2 mb-2"
+                  >
+                    <span>
+                      {item.menu.nom} x {item.quantite}
+                    </span>
+                    <span>{(item.menu.prix * item.quantite).toFixed(2)} €</span>
                   </div>
-                  <span className="font-semibold">
-                    {(item.prix * item.quantite).toFixed(2)}€
+                ))}
+
+                <div className="flex justify-between font-bold text-lg">
+                  <span>Total</span>
+                  <span>
+                    {panier
+                      .reduce(
+                        (sum, item) => sum + item.menu.prix * item.quantite,
+                        0
+                      )
+                      .toFixed(2)}{" "}
+                    €
                   </span>
                 </div>
-              ))
+              </>
             ) : (
-              <p className="text-center text-gray-500">Votre panier est vide</p>
+              <p className="text-gray-500">Votre panier est vide.</p>
             )}
-
-            <div className="flex justify-between font-bold text-lg mt-4">
-              <span>Total</span>
-              <span>{total.toFixed(2)}€</span>
-            </div>
           </div>
 
           {/* Valider */}
           <motion.button
             type="submit"
-            disabled={loading || !items.length || !isValid}
+            disabled={loading || !isValid || panier.length === 0}
             whileHover={{ scale: 1.05, boxShadow: "0 0 25px #6F4E37" }}
-            className="w-full bg-[#6F4E37] text-white py-3 rounded-lg text-lg hover:bg-[#8B5E3C] transition disabled:opacity-50"
+            className={`cursor-pointer w-full py-3 rounded-lg text-lg transition ${
+              loading || !isValid || panier.length === 0
+                ? "bg-gray-400 text-gray-200 cursor-not-allowed"
+                : "bg-[#6F4E37] text-white hover:bg-[#8B5E3C]"
+            }`}
           >
             {loading ? "⏳ Traitement..." : "✅ Valider ma commande"}
           </motion.button>

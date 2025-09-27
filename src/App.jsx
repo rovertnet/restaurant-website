@@ -14,6 +14,7 @@ import Login from "./body/autres/Login.jsx";
 import SignUp from "./body/autres/SignUp.jsx";
 import Preloader from "./body/composants/Preloader.jsx";
 import CategorieDetail from "./body/composants/CategorieDetail.jsx";
+import UserProfile from "./body/composants/UserProfile.jsx";
 
 function App() {
 
@@ -34,6 +35,8 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<SignUp />} />
         <Route path="/categorie/:id" element={<CategorieDetail />} />
+        <Route path="/profile" element={<UserProfile />} />
+
         {/* Ajoutez d'autres routes ici si nécessaire */}
         <Route
           path="*"
